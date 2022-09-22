@@ -8,6 +8,7 @@ setup(
     license='LICENSE',
     description='fe_italy_ti',
     packages=find_packages(),
+    install_requires=['seaborn'],
     include_package_data=True,
     python_requires=">=3.8",
     entry_points={
