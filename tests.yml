@@ -23,7 +23,7 @@
                 ax.text(test_result[0].observed_statistic + 1, len(test_result) - 4.8, 'Events in 10 yrs.',  rotation=90)
                 ax.set_xlim([0, ax.get_xlim()[1]])
                 for i, j in enumerate(test_result):
-                    ax.plot(j.test_distribution[1], len(test_result) - i - 1, 'ko', markersize=4)      
+                    ax.plot(j.test_distribution[1], len(test_result) - i - 1, 'ko', markersize=4)
                 ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))
                 legend_elements = [Line2D([0], [0], marker='o', lw=0,label='Mean rate', color='k', markersize=5),
                                    Line2D([0], [0], color='k', lw=1, label='95% conf.'),
@@ -91,7 +91,7 @@
             import numpy
             import matplotlib.ticker as tick
             from matplotlib.lines import Line2D
-          
+
             for i,j in enumerate(test_result):
                 ax.plot(numpy.mean(j.test_distribution),len(test_result)-i-1, 'ko', markersize=4)
                 ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))
@@ -103,33 +103,33 @@
             ax.legend(handles=legend_elements, loc='lower right', fontsize=9)
       plot_kwargs:
           one_sided_lower: True
-- Poisson_CL:
-      func: poisson_evaluations.conditional_likelihood_test
-      func_kwargs: {}
-      plot_func: plot_poisson_consistency_test
-      plot_args:
-          title: $\mathcal{L}_{N}-$test
-          xlabel: Log-Likelihood
-          figsize: !!python/tuple [5, 6]
-          title_fontsize: 16
-          linewidth: 0.5
-          capsize: 0
-          code: |
-            import numpy
-            import matplotlib.ticker as tick
-            from matplotlib.lines import Line2D
-          
-            for i,j in enumerate(test_result):
-                ax.plot(numpy.mean(j.test_distribution),len(test_result)-i-1, 'ko', markersize=4)
-                ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))
-                legend_elements = [Line2D([0], [0], marker='o', lw=0, label='Sim. expected value',
-                                          color='k', markersize=2),
-                                   Line2D([0], [0], color='k', lw=1, label='Sim. 95% conf.'),
-                                   Line2D([0], [1], color='green', marker='o',lw=0, markersize=4, label='Obs. Likelihood (passes)'),
-                                   Line2D([0], [1], color='red', marker='o',lw=0, markersize=4, label='Obs. Likelihood (fails)')]
-            ax.legend(handles=legend_elements, loc='lower left', fontsize=9)
-      plot_kwargs:
-          one_sided_lower: True
+#- Poisson_CL:
+#      func: poisson_evaluations.conditional_likelihood_test
+#      func_kwargs: {}
+#      plot_func: plot_poisson_consistency_test
+#      plot_args:
+#          title: $\mathcal{L}_{N}-$test
+#          xlabel: Log-Likelihood
+#          figsize: !!python/tuple [5, 6]
+#          title_fontsize: 16
+#          linewidth: 0.5
+#          capsize: 0
+#          code: |
+#            import numpy
+#            import matplotlib.ticker as tick
+#            from matplotlib.lines import Line2D
+#
+#            for i,j in enumerate(test_result):
+#                ax.plot(numpy.mean(j.test_distribution),len(test_result)-i-1, 'ko', markersize=4)
+#                ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))
+#                legend_elements = [Line2D([0], [0], marker='o', lw=0, label='Sim. expected value',
+#                                          color='k', markersize=2),
+#                                   Line2D([0], [0], color='k', lw=1, label='Sim. 95% conf.'),
+#                                   Line2D([0], [1], color='green', marker='o',lw=0, markersize=4, label='Obs. Likelihood (passes)'),
+#                                   Line2D([0], [1], color='red', marker='o',lw=0, markersize=4, label='Obs. Likelihood (fails)')]
+#            ax.legend(handles=legend_elements, loc='lower left', fontsize=9)
+#      plot_kwargs:
+#          one_sided_lower: True
 - Binomial_S:
       func: binomial_spatial_test
       func_kwargs: {}
@@ -153,14 +153,31 @@
                                      Line2D([0], [1], color='green', marker='o',lw=0, markersize=4, label='Obs. Likelihood (passes)'),
                                      Line2D([0], [1], color='red', marker='o',lw=0, markersize=4, label='Obs. Likelihood (fails)')]
               ax.legend(handles=legend_elements, loc='lower right', fontsize=9)
-- Poisson_T:
-    func: poisson_evaluations.paired_t_test
-    func_kwargs: {}
-    plot_func: plot_comparison_test
-    ref_model: MPS04
-    plot_args:
-      title: $T-$test
-      figsize: !!python/tuple [ 8, 4 ]
-      title_fontsize: 16
-      ylabel: Information Gain / EQ
+- Brier:
+      func: brier_score
+      func_kwargs: {}
+      plot_func: plot_binary_consistency_test
+      plot_args:
+          title: $\mathcal{B}-$test
+          title_fontsize: 16
+          figsize: !!python/tuple [5, 6]
+          xlabel: Brier Score
+          linewidth: 0.5
+          capsize: 0
+
+#- Matrix_T:
+#    func: vector_poisson_t_w_test
+#    func_kwargs: {}
+#    plot_func: plot_matrix_comparative_test
+#    plot_args:
+#        code: |
+#            import seaborn
+#            import matplotlib.pyplot as plt
+#            plt.rcParams.update({
+#                                'axes.titleweight': 'bold',
+#                                'xtick.bottom': True, 'axes.labelweight': 'bold',
+#                                'xtick.labelsize': 8, 'ytick.labelsize': 8,
+#                                'legend.fontsize': 9})
+#
+#            seaborn.set_style("darkgrid", {"axes.facecolor": ".9", 'font.family': 'Ubuntu'})
 
