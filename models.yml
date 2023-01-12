@@ -1,114 +1,77 @@
 - HAZFX_BPT:
-    path: models
-    format: xml
     forecast_unit: 10
-    filename: akinci.HAZFX_BPT.italy.10yr.2010-01-01.xml
-    db_type: hdf5
+    path: models/akinci.HAZFX_BPT.italy.10yr.2010-01-01.xml
+    use_db: True
 - HAZGRIDX:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: akinci-lombardi.HAZGRIDX.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/akinci-lombardi.HAZGRIDX.italy.10yr.2010-01-01.xml
+      use_db: True
 - HZA_TD:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: chan.HZA_TD.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/chan.HZA_TD.italy.10yr.2010-01-01.xml
+      use_db: True
 - HZA_TI:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: chan.HZA_TI.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/chan.HZA_TI.italy.10yr.2010-01-01.xml
+      use_db: True
 - LTST:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: console-murru-falcone.LTST.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/console-murru-falcone.LTST.italy.10yr.2010-01-01.xml
+      use_db: True
 - PHM_Grid:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: faenza.PHM_Grid.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/faenza.PHM_Grid.italy.10yr.2010-01-01.xml
+      use_db: True
 - PHM_Zone:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: faenza.PHM_Zone.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/faenza.PHM_Zone.italy.10yr.2010-01-01.xml
+      use_db: True
 - ALM:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: gulia-wiemer.ALM.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/gulia-wiemer.ALM.italy.10yr.2010-01-01.xml
+      use_db: True
 - HALM:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: gulia-wiemer.HALM.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/gulia-wiemer.HALM.italy.10yr.2010-01-01.xml
+      use_db: True
 - DBM:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: lombardi.DBM.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/lombardi.DBM.italy.10yr.2010-01-01.xml
+      use_db: True
 - MPS04:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: meletti.MPS04.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/meletti.MPS04.italy.10yr.2010-01-01.xml
+      use_db: True
 - MPS04after:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: meletti.MPS04after.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/meletti.MPS04after.italy.10yr.2010-01-01.xml
+      use_db: True
 - RI:
       path: models
-      format: xml
       forecast_unit: 10
-      filename: nanjo.RI.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/nanjo.RI.italy.10yr.2010-01-01.xml
+      use_db: True
 - ALM_IT:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: schorlemmer-wiemer.ALM_IT.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/schorlemmer-wiemer.ALM_IT.italy.10yr.2010-01-01.xml
+      use_db: True
 - HRSS-m1:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: werner.HRSS-m1.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/werner.HRSS-m1.italy.10yr.2010-01-01.xml
+      use_db: True
 - HRSS-m2:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: werner.HRSS-m2.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/werner.HRSS-m2.italy.10yr.2010-01-01.xml
+      use_db: True
 - TripleS-CPTI:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: zechar.TripleS-CPTI.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/zechar.TripleS-CPTI.italy.10yr.2010-01-01.xml
+      use_db: True
 - TripleS-CSI:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: zechar.TripleS-CSI.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/zechar.TripleS-CSI.italy.10yr.2010-01-01.xml
+      use_db: True
 - TripleS-hybrid:
-      path: models
-      format: xml
       forecast_unit: 10
-      filename: zechar.TripleS-hybrid.italy.10yr.2010-01-01.xml
-      db_type: hdf5
+      path: models/zechar.TripleS-hybrid.italy.10yr.2010-01-01.xml
+      use_db: True
