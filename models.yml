@@ -1,0 +1,77 @@
+- HAZFX_BPT:
+    forecast_unit: 10
+    path: models/akinci.HAZFX_BPT.italy.10yr.2010-01-01.xml
+    use_db: True
+- HAZGRIDX:
+      forecast_unit: 10
+      path: models/akinci-lombardi.HAZGRIDX.italy.10yr.2010-01-01.xml
+      use_db: True
+- HZA_TD:
+      forecast_unit: 10
+      path: models/chan.HZA_TD.italy.10yr.2010-01-01.xml
+      use_db: True
+- HZA_TI:
+      forecast_unit: 10
+      path: models/chan.HZA_TI.italy.10yr.2010-01-01.xml
+      use_db: True
+- LTST:
+      forecast_unit: 10
+      path: models/console-murru-falcone.LTST.italy.10yr.2010-01-01.xml
+      use_db: True
+- PHM_Grid:
+      forecast_unit: 10
+      path: models/faenza.PHM_Grid.italy.10yr.2010-01-01.xml
+      use_db: True
+- PHM_Zone:
+      forecast_unit: 10
+      path: models/faenza.PHM_Zone.italy.10yr.2010-01-01.xml
+      use_db: True
+- ALM:
+      forecast_unit: 10
+      path: models/gulia-wiemer.ALM.italy.10yr.2010-01-01.xml
+      use_db: True
+- HALM:
+      forecast_unit: 10
+      path: models/gulia-wiemer.HALM.italy.10yr.2010-01-01.xml
+      use_db: True
+- DBM:
+      forecast_unit: 10
+      path: models/lombardi.DBM.italy.10yr.2010-01-01.xml
+      use_db: True
+- MPS04:
+      forecast_unit: 10
+      path: models/meletti.MPS04.italy.10yr.2010-01-01.xml
+      use_db: True
+- MPS04after:
+      forecast_unit: 10
+      path: models/meletti.MPS04after.italy.10yr.2010-01-01.xml
+      use_db: True
+- RI:
+      path: models
+      forecast_unit: 10
+      path: models/nanjo.RI.italy.10yr.2010-01-01.xml
+      use_db: True
+- ALM_IT:
+      forecast_unit: 10
+      path: models/schorlemmer-wiemer.ALM_IT.italy.10yr.2010-01-01.xml
+      use_db: True
+- HRSS-m1:
+      forecast_unit: 10
+      path: models/werner.HRSS-m1.italy.10yr.2010-01-01.xml
+      use_db: True
+- HRSS-m2:
+      forecast_unit: 10
+      path: models/werner.HRSS-m2.italy.10yr.2010-01-01.xml
+      use_db: True
+- TripleS-CPTI:
+      forecast_unit: 10
+      path: models/zechar.TripleS-CPTI.italy.10yr.2010-01-01.xml
+      use_db: True
+- TripleS-CSI:
+      forecast_unit: 10
+      path: models/zechar.TripleS-CSI.italy.10yr.2010-01-01.xml
+      use_db: True
+- TripleS-hybrid:
+      forecast_unit: 10
+      path: models/zechar.TripleS-hybrid.italy.10yr.2010-01-01.xml
+      use_db: True
