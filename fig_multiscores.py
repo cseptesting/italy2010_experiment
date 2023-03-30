@@ -24,7 +24,7 @@ def plot_consistency(ax, tests, model_i, color):
     dh = -0.02
     cx = [pos[0] - sep*r*(len(tests)-1) + 2*sep*r*(i) for i in range(len(tests))]
     for i, ci in zip(tests, cx):
-        artist = patches.Circle((ci, pos[1] + dh), r, fc=color)
+        artist = patches.Circle((ci, pos[1] + dh), r, fc=color, ec='black')
         ax.get_figure().add_artist(artist)
         ax.get_figure().text(ci, pos[1] + dh, i, ha='center', va='center', color='white')
     return ax
@@ -149,7 +149,7 @@ def plot_legends(Axes, colors, labels):
                        Line2D([0], [0], color=plt.cm.colors.to_rgb(colors[2]),
                               lw=4, label=labels[2]),
                        Line2D([0], [0], color=colors[3],
-                              lw=0, marker='o', markersize=10, label=labels[3])]
+                              lw=0, marker='o', markeredgecolor='black', markersize=10, label=labels[3])]
 
     Axes.get_figure().legend(handles=legend_elements, loc='lower right', fontsize=9)
     return Axes
@@ -213,6 +213,7 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
     NN = exp._read_results([i for i in exp.tests if i.name == 'Poisson_N'][0], exp.timewindows[-1])
     SS = exp._read_results([i for i in exp.tests if i.name == 'Poisson_S'][0], exp.timewindows[-1])
     MM = exp._read_results([i for i in exp.tests if i.name == 'Poisson_M'][0], exp.timewindows[-1])
+    CL = exp._read_results([i for i in exp.tests if i.name == 'Poisson_CL'][0], exp.timewindows[-1])
     for model in models:
     # for n, m, s in zip(paths.get_csep_result('N', years),
     #                    paths.get_csep_result('M', years),
@@ -220,7 +221,7 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
         n = [i for i in NN if i.sim_name == model][0]
         m = [i for i in MM if i.sim_name == model][0]
         s = [i for i in SS if i.sim_name == model][0]
-        print(n)
+        cl = [i for i in CL if i.sim_name == model][0]
         # with open(paths['evaluations']['Poisson_N'][model], 'r') as file_:
         #     n = EvaluationResult.from_dict(json.load(file_))
         # with open(paths['evaluations']['Poisson_S'][model], 'r') as file_:
@@ -235,6 +236,8 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
             model_cons.append('$M$')
         if s.quantile > p:
             model_cons.append('$S$')
+        if cl.quantile > p:
+            model_cons.append('$CL$')
         Consistency_Results.append(model_cons)
 
     names = [i.sim_name for i in LL]
@@ -267,8 +270,8 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
 
     Axes = plot_legends(Axes, colors,  labels)
     # Axes.set_title('Test results - %i years' % (years) , pad=15, fontsize=14)
-    # if savepath:
-    #     plt.savefig(savepath, dpi=300,  transparent=True)
+    if savepath:
+        plt.savefig(savepath, dpi=300,  format='svg', transparent=True)
     plt.show()
 
 
@@ -292,7 +295,8 @@ if __name__ == '__main__':
                  p=p,
                  labels=labels,
                  format=['%i', '%i', '%.4e',],
-                 lowcuts=[-189, -95, -0.00010851])
+                 lowcuts=[-189, -95, -0.00010851],
+                 savepath='multiscore.svg')
 
 
     # plot_results(5,

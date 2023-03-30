@@ -5,7 +5,7 @@ time_config:
 
 region_config:
   region: italy_csep_region
-  mag_min: 5.0
+  mag_min: 4.95
   mag_max: 9.0
   mag_bin: 0.1
   depth_min: -2
