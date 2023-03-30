@@ -3,8 +3,9 @@ import numpy as np
 import matplotlib.patches as patches
 from matplotlib.lines import Line2D
 import seaborn
-from fecsep import core
+from fecsep import experiment
 import json
+import csep
 from csep.models import EvaluationResult
 seaborn.set_style("white", {"axes.facecolor": ".9", 'font.family': 'Ubuntu'})
 plt.rcParams.update({'xtick.bottom': True, 'axes.labelweight': 'bold',
@@ -34,7 +35,8 @@ def plot_all_consistencies(Axes, Results, color='green'):
     return Axes
 
 def plot_axis(axis, n_results, offset, end_theta, n, min_y,
-              array, yticks, low_bound, color, label, fontsize, format):
+              array, yticks, low_bound, color, label, fontsize, format,
+              ytick_offset=0.03):
 
     axis_angle = (end_theta + np.deg2rad(offset) + n*(2*np.pi-end_theta - 2*np.deg2rad(offset))/(n_results-1))
     axis.plot([axis_angle, axis_angle], [min_y, 1. + min_y],
@@ -53,7 +55,8 @@ def plot_axis(axis, n_results, offset, end_theta, n, min_y,
             val = format % val
         if low_bound and i == yticks[0]:
             val = '<' + val
-        axis.text(axis_angle, i - 0.03, val,
+
+        axis.text(axis_angle, i - ytick_offset, val,
                   rotation=np.rad2deg(axis_angle) + 90, color=color,
                   ha='center', va='center', fontsize=fontsize)
     if 'e' in format:
@@ -127,10 +130,14 @@ def plot_scores(arrays, colors, result_labels, model_labels,
     yticks = plot_rticks(ax, min_y, ny)
 
     # todo make generic
-    new_labels = ['Log-score', 'Brier score', 'Binomial score']
+    new_labels = ['Log-score', ' Binomial-score', 'Brier-score']
     for k, i in enumerate([0, 1, 2]):
+        if k == 0 or k == 2:
+            ytick_offset = 0.03
+        else:
+            ytick_offset = -0.03
         plot_axis(ax, 3, offset, end_theta, k,  min_y, arrays[i], yticks, lowbounds[i],
-                  color_array[i], new_labels[i], fontsize, format[i])
+                  color_array[i], new_labels[i], fontsize, format[i], ytick_offset)
 
     return ax
 
@@ -158,11 +165,14 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
 
     ## Log-Likelihood
     models = [i.name for i in exp.models]
-    _, _ , paths = exp.get_run_struct()
-    LL = []
-    for model in models:
-        with open(paths['evaluations']['Poisson_L'][model], 'r') as file_:
-            LL.append(EvaluationResult.from_dict(json.load(file_)))
+
+    ll_test = [i for i in exp.tests if i.name == 'Poisson_CL'][0]
+    # _, _ , paths = exp.prepare_paths()
+    LL = exp._read_results(ll_test, exp.timewindows[-1])
+    # LL = []
+    # for model in models:
+    #     with open(paths['evaluations']['Poisson_L'][model], 'r') as file_:
+    #         LL.append(EvaluationResult.from_dict(json.load(file_)))
     ll_score = np.array([i.observed_statistic for i in LL])
     ll_label = r'$\mathcal{L}$'
 
@@ -170,11 +180,14 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
         ll_score[ll_score < lowcuts[0]] = lowcuts[0]
 
 
-    ## Conditional Log-Likelihood
-    BS = []
-    for model in models:
-        with open(paths['evaluations']['Binomial_S'][model], 'r') as file_:
-            BS.append(EvaluationResult.from_dict(json.load(file_)))
+    ## Binomial_S
+    # BS = []
+    bs_test = [i for i in exp.tests if i.name == 'Binomial_S'][0]
+# _, _ , paths = exp.prepare_paths()
+    BS = exp._read_results(bs_test, exp.timewindows[-1])
+    # for model in models:
+    #     with open(paths['evaluations']['Binomial_S'][model], 'r') as file_:
+    #         BS.append(EvaluationResult.from_dict(json.load(file_)))
     bs_score = np.array([i.observed_statistic for i in BS])
 
     bs_label = r'$\mathcal{S}_{B}$'
@@ -183,26 +196,37 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
 
     ## Brier score
     Brier_results = []
-    for model in models:
-        with open(paths['evaluations']['Brier'][model], 'r') as file_:
-            Brier_results.append(EvaluationResult.from_dict(json.load(file_)))
+    Brier_test = [i for i in exp.tests if i.name == 'Brier'][0]
+# _, _ , paths = exp.prepare_paths()
+    Brier_results = exp._read_results(Brier_test, exp.timewindows[-1])
+
+    # for model in models:
+    #     with open(paths['evaluations']['Brier'][model], 'r') as file_:
+    #         Brier_results.append(EvaluationResult.from_dict(json.load(file_)))
     Brier = np.array([i.observed_statistic for i in Brier_results])
     brier_label = r'$\mathcal{B}$'
     if isinstance(lowcuts[2], (float, int)):
         Brier[Brier < lowcuts[2]] = lowcuts[2]
-
     ## Consistency tests
     Consistency_Results = []
+
+    NN = exp._read_results([i for i in exp.tests if i.name == 'Poisson_N'][0], exp.timewindows[-1])
+    SS = exp._read_results([i for i in exp.tests if i.name == 'Poisson_S'][0], exp.timewindows[-1])
+    MM = exp._read_results([i for i in exp.tests if i.name == 'Poisson_M'][0], exp.timewindows[-1])
     for model in models:
     # for n, m, s in zip(paths.get_csep_result('N', years),
     #                    paths.get_csep_result('M', years),
     #                    paths.get_csep_result('S', years)):
-        with open(paths['evaluations']['Poisson_N'][model], 'r') as file_:
-            n = EvaluationResult.from_dict(json.load(file_))
-        with open(paths['evaluations']['Poisson_S'][model], 'r') as file_:
-            s = EvaluationResult.from_dict(json.load(file_))
-        with open(paths['evaluations']['Poisson_M'][model], 'r') as file_:
-            m = EvaluationResult.from_dict(json.load(file_))
+        n = [i for i in NN if i.sim_name == model][0]
+        m = [i for i in MM if i.sim_name == model][0]
+        s = [i for i in SS if i.sim_name == model][0]
+        print(n)
+        # with open(paths['evaluations']['Poisson_N'][model], 'r') as file_:
+        #     n = EvaluationResult.from_dict(json.load(file_))
+        # with open(paths['evaluations']['Poisson_S'][model], 'r') as file_:
+        #     s = EvaluationResult.from_dict(json.load(file_))
+        # with open(paths['evaluations']['Poisson_M'][model], 'r') as file_:
+        #     m = EvaluationResult.from_dict(json.load(file_))
 
         model_cons = []
         if n.quantile[0] > p/2. and n.quantile[1] < 1-p/2.:
@@ -224,18 +248,19 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
     bs_score = bs_score[order]
     Brier = Brier[order]
 
+
     model_names = [names[i] for i in order]
     Consistency_Results = [Consistency_Results[i] for i in order]
 
     ## Complete array
-    colors = ['darkorange',
-              'darkred',
+    colors = ['darkred',
+              'darkorange',
               'teal',
               'olivedrab']
 
-    Axes = plot_scores([ll_score, Brier, bs_score],
+    Axes = plot_scores([ll_score, bs_score, Brier],
                        colors[:3],
-                       [ll_label, brier_label, bs_label,],
+                       [ll_label, bs_label, brier_label],
                        model_names, format=format, angle_offset=60, offset=10, min_y=0.3, ny=4, fontsize=9,
                        lowbounds=[bool(i) for i in lowcuts])
     Axes = plot_all_consistencies(Axes, Consistency_Results, color=colors[3])
@@ -251,24 +276,25 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
 if __name__ == '__main__':
     cfg = 'config.yml'
 
-    exp = core.Experiment.from_yaml(cfg)
-    exp.set_test_date(exp.end_date)
+    exp = experiment.Experiment.from_yml(cfg)
+    # exp.set_test_date(exp.end_date)
     exp.set_tests()
     exp.set_models()
-    exp.stage_models()
-    exp.get_run_struct()
+    # exp.stage_models()
+    exp.prepare_paths()
     p = 0.05
     labels = ['Log-Likelihood $\mathcal{L}$',
-              'Brier score $\mathcal{B}$',
               'Binomial Score $\mathcal{S}_{B}$',
+              'Brier score $\mathcal{B}$',
               'Poisson Consistency $(p\geq%.2f)$' % p]
 
     plot_results(exp,
                  p=p,
                  labels=labels,
-                 format=['%i', '%.4e', '%i'],
-                 lowcuts=[-190, -90, -0.00010852])
-    #
+                 format=['%i', '%i', '%.4e',],
+                 lowcuts=[-189, -95, -0.00010851])
+
+
     # plot_results(5,
     #               labels=labels,
     #               format=['%i', '%i', '%.4e', '%.4e'],
