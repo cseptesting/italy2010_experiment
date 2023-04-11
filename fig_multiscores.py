@@ -130,7 +130,7 @@ def plot_scores(arrays, colors, result_labels, model_labels,
     yticks = plot_rticks(ax, min_y, ny)
 
     # todo make generic
-    new_labels = ['Log-score', ' Binomial-score', 'Brier-score']
+    new_labels = ['$\mathcal{L}$', ' $\mathcal{B}$', '$\mathcal{Q}$']
     for k, i in enumerate([0, 1, 2]):
         if k == 0 or k == 2:
             ytick_offset = 0.03
@@ -286,16 +286,16 @@ if __name__ == '__main__':
     # exp.stage_models()
     exp.prepare_paths()
     p = 0.05
-    labels = ['Log-Likelihood $\mathcal{L}$',
-              'Binomial Score $\mathcal{S}_{B}$',
-              'Brier score $\mathcal{B}$',
-              'Poisson Consistency $(p\geq%.2f)$' % p]
+    labels = ['Log-score $\mathcal{L}$',
+              'Binary-score $\mathcal{B}$',
+              'Quadratic-score $\mathcal{Q}$',
+              'Poisson Consistency \n $(p\geq%.2f)$' % p]
 
     plot_results(exp,
                  p=p,
                  labels=labels,
                  format=['%i', '%i', '%.4e',],
-                 lowcuts=[-189, -95, -0.00010851],
+                 lowcuts=[-185, -90, -0.00010845],
                  savepath='multiscore.svg')
 
 
