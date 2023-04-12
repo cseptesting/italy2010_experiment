@@ -8,10 +8,16 @@ conda create -n fe_italy
 ```
 
 ```
-git clone git@git.gfz-potsdam.de:csep-group/fecsep.git --branch=dev --depth=1
+git clone https://github.com/cseptesting/fecsep.git  --branch=main --depth=1
 cd fecsep
 conda env update --file environment.yml --prune
 pip install -e .
+```
+
+
+If the latest `pycsep` version is needed
+```
 git clone https://github.com/SCECcode/pycsep.git --branch=master --depth=1
-cd fecsep
+cd pycsep
+pip install -e .
 ```
