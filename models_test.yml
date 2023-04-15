@@ -1,8 +1,0 @@
-- HAZFX_BPT:
-    forecast_unit: 10
-    path: models/akinci.HAZFX_BPT.italy.10yr.2010-01-01.xml
-    use_db: True
-- TripleS-CSI:
-    forecast_unit: 10
-    path: models/zechar.TripleS-CSI.italy.10yr.2010-01-01.xml
-    use_db: True

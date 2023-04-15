@@ -1,9 +1,8 @@
-name: italy
+name: Complete Run
+
 time_config:
   start_date: 2010-1-1T00:00:00
   end_date: 2020-1-1T00:00:00
-  intervals: 10
-  growth: cumulative
 
 region_config:
   region: italy_csep_region
@@ -13,7 +12,6 @@ region_config:
   depth_min: -2
   depth_max: 30
 
-catalog: catalog_ml.json
+catalog: catalog.json
 model_config: models.yml
-test_config: tests_seq.yml
-
+test_config: tests.yml

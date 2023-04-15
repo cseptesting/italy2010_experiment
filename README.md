@@ -1,21 +1,28 @@
-# Floating Experiment - Italy time independent
-
+`# Floating Experiment - Italy time independent
+`
 
 ## Install
-create conda venv fe_italy_ti
+
+Create working environment
 ```
 conda create -n fe_italy 
+conda activate -n fe_italy
 ```
 
+Install pyCSEP
+```
+conda install -c conda-forge pycsep 
+```
+
+Install fxCSEP
 ```
 git clone https://github.com/cseptesting/fecsep.git  --branch=main --depth=1
 cd fecsep
-conda env update --file environment.yml --prune
 pip install -e .
 ```
 
 
-If the latest `pycsep` version is needed
+If the latest `pycsep` commit is needed
 ```
 git clone https://github.com/SCECcode/pycsep.git --branch=master --depth=1
 cd pycsep
