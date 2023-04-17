@@ -260,7 +260,7 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
               'darkorange',
               'teal',
               'olivedrab']
-    print(ll_score, bs_score, Brier)
+
     Axes = plot_scores([ll_score, bs_score, Brier],
                        colors[:3],
                        [ll_label, bs_label, brier_label],
@@ -295,7 +295,7 @@ if __name__ == '__main__':
                  p=p,
                  labels=labels,
                  format=['%i', '%i', '%.4e',],
-                 lowcuts=[-210, -108, -0.00011395],
+                 lowcuts=[-185, -90, -0.00010845],
                  savepath='multiscore.svg')
 
 
