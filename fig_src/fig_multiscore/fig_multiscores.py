@@ -63,7 +63,7 @@ def plot_axis(axis, n_results, offset, end_theta, n, min_y,
         label += '\n ($\cdot\,10^{{%i}}$)' % int(exp)
 
     axis.text(axis_angle, i + 0.05, '%s' % label,
-              color=color, ha='left', va='center', fontsize=10)
+              color=color, ha='left', va='center', fontsize=15)
     if exp:
         return exp
 
@@ -237,7 +237,7 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
         if s.quantile > p:
             model_cons.append('$S$')
         if cl.quantile > p:
-            model_cons.append('$CL$')
+            model_cons.append('$L_{N}$')
         Consistency_Results.append(model_cons)
 
     names = [i.sim_name for i in LL]
@@ -295,7 +295,7 @@ if __name__ == '__main__':
                  p=p,
                  labels=labels,
                  format=['%i', '%i', '%.4e',],
-                 lowcuts=[-210, -108, -0.00011395],
+                 lowcuts=[-210, -105, -0.0001139],
                  savepath='multiscore.svg')
 
 
