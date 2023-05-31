@@ -30,7 +30,9 @@
                 ax.legend(handles=legend_elements, loc='lower right')
 - Poisson_S:
     func: poisson_evaluations.spatial_test
-    func_kwargs: {}
+    func_kwargs:
+      seed: 23
+      num_simulations: 10000
     plot_func: plot_poisson_consistency_test
     plot_kwargs:
       one_sided_lower: True
@@ -54,7 +56,9 @@
 
 - Poisson_M:
       func: poisson_evaluations.magnitude_test
-      func_kwargs: {}
+      func_kwargs:
+        seed: 23
+        num_simulations: 10000
       plot_func: plot_poisson_consistency_test
       plot_args:
           title: $\mathcal{M}-$test
@@ -77,7 +81,9 @@
           one_sided_lower: True
 - Poisson_L:
       func: poisson_evaluations.likelihood_test
-      func_kwargs: {}
+      func_kwargs:
+        seed: 23
+        num_simulations: 10000
       plot_func: plot_poisson_consistency_test
       plot_args:
           title: $\mathcal{L}-$test
@@ -104,7 +110,9 @@
           one_sided_lower: True
 - Poisson_CL:
       func: poisson_evaluations.conditional_likelihood_test
-      func_kwargs: {}
+      func_kwargs:
+        seed: 23
+        num_simulations: 10000
       plot_func: plot_poisson_consistency_test
       plot_args:
           title: $\mathcal{L}_{N}-$test
@@ -129,9 +137,11 @@
             ax.legend(handles=legend_elements, loc='lower left', fontsize=9)
       plot_kwargs:
           one_sided_lower: True
-- Binomial_S:
+- Binary_S:
       func: binomial_spatial_test
-      func_kwargs: {}
+      func_kwargs:
+        seed: 23
+        num_simulations: 10000
       plot_func: plot_poisson_consistency_test
       plot_kwargs:
         one_sided_lower: True
@@ -154,7 +164,8 @@
               ax.legend(handles=legend_elements, loc='lower right', fontsize=9)
 - Brier:
       func: brier_score
-      func_kwargs: {}
+      func_kwargs:
+        binary: False
       plot_func: plot_poisson_consistency_test
       plot_args:
         title: $\mathcal{Q}_{B}-$test

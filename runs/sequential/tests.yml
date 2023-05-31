@@ -6,6 +6,7 @@
       ylabel: Information Gain (respect to MPS04)
       figsize: !!python/tuple [8, 4]
       linewidth: 1
+      # Manually color clustering of the models by performance
       colors: [darkgreen, #hazfx
                fuchsia, #ltst
                saddlebrown, # ri ####

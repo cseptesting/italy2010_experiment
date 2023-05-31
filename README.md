@@ -5,8 +5,8 @@
 
 Create working environment
 ```
-conda create -n fe_italy 
-conda activate -n fe_italy
+conda create -n float_italy 
+conda activate float_italy
 ```
 
 Install pyCSEP
@@ -14,9 +14,9 @@ Install pyCSEP
 conda install -c conda-forge pycsep 
 ```
 
-Install fxCSEP
+Install floatCSEP
 ```
-git clone https://github.com/cseptesting/fecsep.git  --branch=main --depth=1
+git clone https://github.com/cseptesting/floatcsep.git  --branch=main --depth=1
 cd fecsep
 pip install -e .
 ```
