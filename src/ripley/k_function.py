@@ -163,7 +163,7 @@ def k_ripley_test(model, catalog, polygon='region_it.txt', nsim=2000, r_disc=200
     sim_catalogs = [(simulate(model, n_events), model, polygon, r)
                     for i in np.arange(nsim)]
 
-    start = time.process_time()
+    start = time.perf_counter()
     p = Pool(processes=os.cpu_count())
     starmap = p.starmap(k_ripley, sim_catalogs)
     p.close()
@@ -215,7 +215,7 @@ def k_ripley_test(model, catalog, polygon='region_it.txt', nsim=2000, r_disc=200
                'k_cat': k_cat,
                'l_cat': l_cat,
                'pcf_cat': pcf_cat}
-    print(f'Finished in {time.process_time() - start:.1f}')
+    print(f'Finished in {time.perf_counter() - start:.1f}s')
 
     return results
 
