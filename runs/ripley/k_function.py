@@ -1,26 +1,25 @@
-
 import os
-import numpy
-from floatcsep.experiment import Experiment
+import h5py
 import numpy as np
+import time
+import scipy.interpolate as scint
 from multiprocessing import Pool
+import cartopy
+from floatcsep.experiment import Experiment
+from floatcsep.utils import timewindow2str
 from rpy2 import robjects
 import rpy2.robjects.packages as rpackages
 from rpy2.robjects import globalenv
-import cartopy
-import time
-
-
 
 
 def sim(num_events, sampling_weights, sim_fore, random_numbers=None):
     if random_numbers is None:
-        random_numbers = numpy.random.rand(num_events)
+        random_numbers = np.random.rand(num_events)
     else:
         pass
     sim_fore.fill(0)
-    pnts = numpy.searchsorted(sampling_weights, random_numbers, side='right')
-    numpy.add.at(sim_fore, pnts, 1)
+    pnts = np.searchsorted(sampling_weights, random_numbers, side='right')
+    np.add.at(sim_fore, pnts, 1)
     return sim_fore
 
 
@@ -28,8 +27,8 @@ def simulate(model, number_events):
 
     lons, lats = model.region.midpoints().T
     forecast_data = model.spatial_counts()
-    sampling_weights = numpy.cumsum(forecast_data) / numpy.sum(forecast_data)
-    sim_fore = numpy.zeros(sampling_weights.shape)
+    sampling_weights = np.cumsum(forecast_data) / np.sum(forecast_data)
+    sim_fore = np.zeros(sampling_weights.shape)
 
     sim_cat = sim(number_events, sampling_weights, sim_fore).astype(int)
     ind_sim = np.where(sim_cat != 0)[0]
@@ -50,20 +49,27 @@ def lonlat2mercator(points):
     dest_crs = cartopy.crs.Mercator()
     Points = dest_crs.transform_points(src_crs, points[:, 0], points[:, 1])
     return np.floor(Points[:, :2])
-#
-# def pcf_spatstat(fv, method='c'):
-#
-#     ## Import R spatstat modules
-#     spat_core = rpackages.importr("spatstat.core")
-#
-#     ## Call the pair correlation function
-#     pcf_func = spat_core.pcf
-#     pcf_args = (('X', fv), ('method', method))
-#     pcf_results = pcf_func.rcall(pcf_args, globalenv)
-#     return pcf_results
 
 
-def K_ripley(points, model, polygon, r, normpower=2, plot=False):
+def ripley2hdf5(results, fname, grp='',):
+
+    with h5py.File(fname, 'a') as hfile:
+        for i, j in results.items():
+            array = np.array(j)
+            hfile.require_dataset(f'{grp}/{i}', shape=array.shape, dtype=float)
+            hfile[f'{grp}/{i}'][:] = array
+
+
+def read_hdf5(fname):
+
+    with h5py.File(fname, 'r') as db:
+        parsed_results = dict.fromkeys(db.keys())
+        for key, val in db.items():
+            parsed_results[key] = val[:]
+    return parsed_results
+
+
+def k_ripley(points, model, polygon, r, norm_power=2, k_fit=2, plot=False):
 
     ## Import R spatstat modules
     spat_geom = rpackages.importr("spatstat.geom")
@@ -87,7 +93,7 @@ def K_ripley(points, model, polygon, r, normpower=2, plot=False):
     image = spat_geom.im(rates_mat, Xregion_array, Yregion_array)
 
     # Get the polygon window of the forecast
-    polygon = numpy.genfromtxt(polygon)
+    polygon = np.genfromtxt(polygon)
     polygon = lonlat2mercator(polygon)/1000.
     poly_array = robjects.FloatVector(np.flipud(polygon[:-1, :]).T.ravel())
     poly_mat = robjects.r['matrix'](poly_array, nrow=polygon.shape[0] - 1)
@@ -105,10 +111,10 @@ def K_ripley(points, model, polygon, r, normpower=2, plot=False):
     # Get arguments: r-vector user-defined or automatic
     if r is None:
         args = (('X', PPP_R), ('lambda', image), ('correction', 'best'),
-                ('normpower', normpower))
+                ('normpower', norm_power))
     else:
         args = (('X', PPP_R), ('lambda', image), ('correction', 'best'),
-                ('normpower', normpower), ('r', robjects.FloatVector(r)))
+                ('normpower', norm_power), ('r', robjects.FloatVector(r)))
 
     # Get results
     k_inhomogeneous = spat_core.Kinhom
@@ -118,315 +124,71 @@ def K_ripley(points, model, polygon, r, normpower=2, plot=False):
         spat_geom.plot_im(image, 'asd', multiplot=True)
         spat_geom.plot_ppp(PPP_R, 'asd', add=True)
 
-    return k_results
+    r_i = np.array(k_results[0])
+    k_i = np.array(k_results[2])
+    l_i = np.divide(np.sqrt(k_i), np.sqrt(np.pi))
+    # low_cutoff
+    cell_size = 10
+    degree = 3
+    ind = np.argwhere(r_i > cell_size)[0, 0]
+    r_pcf = r_i[ind:-degree]
 
-# def plot_results(Results, alpha=0.05):
-#
-#
-#     L_diff = dict.fromkeys(Results.keys())
-#     pcf_diff = dict.fromkeys(Results.keys())
-#
-#     a = 0
-#     for key, value in Results.items():
-#         a += 1
-#         if a == 6:
-#             break
-#         K_sims = value['K_sims']
-#         K_cat = value['K_cat']
-#         r_cat = value['rk_cat']
-#         r_sims = value['Rk_sims'][0]
-#
-#
-#
-#         K_avg = np.nanmean(K_sims, axis=0)
-#         K_up = np.nanquantile(K_sims, 1-alpha/2, axis=0)
-#         K_down = np.nanquantile(K_sims, alpha/2, axis=0)
-#
-#         sns.set_style("darkgrid", {"axes.facecolor": ".9", 'font.family':'Ubuntu'})
-#         # for i in K_sims:
-#         #     sns.lineplot(x=r_sims, y=i, lw=0.05, color='black')
-#         # sns.lineplot(x=r_cat, y=K_cat, color='r', label='Observed catalog')
-#         # sns.lineplot(x=r_sims, y=K_avg, label='Sim. average')
-#
-#         # plt.fill_between(r_sims, K_down, K_up, color='gray', alpha=0.2, label=r'Sim. envelope ($\alpha=%.2f$)' % (1-2*alpha))
-#         # plt.title("Model: %s" % key, fontsize=16)
-#         # plt.xlabel(r"$r~~\mathrm{[km]}$")
-#         # plt.ylabel(r"$\hat{K}(r)$")
-#         # plt.legend(loc=2)
-#         # plt.savefig(paths.get_kripley_figpath('K', 10,  key))
-#         # plt.show()
-#         #
-#         L_sims =  value['L_sims']
-#         L_cat = value['L_cat']
-#         L_avg = np.mean(L_sims, axis=0)
-#         L_up = np.quantile(L_sims, 1-alpha/2, axis=0)
-#         L_down = np.quantile(L_sims, alpha/2, axis=0)
-#
-#         L_over = (L_cat > L_up)*(L_cat - L_up) +\
-#                  (L_down < L_cat)*(L_cat < L_up)*0 +\
-#                  (L_cat < L_down)*(L_cat - L_down)
-#         L_over[np.isnan(L_over)] = 0.
-#         L_diff[key] = L_over
-#
-#         # for i in L_sims:
-#         #     sns.lineplot(x=r_sims, y=i, lw=0.05, color='black', ls='--')
-#         # sns.lineplot(x=r_cat, y=L_cat, color='r', label='Observed catalog')
-#         # sns.lineplot(x=r_sims, y=L_avg, label='Sim. average')
-#         # plt.fill_between(r_sims, L_down, L_up, color='gray', alpha=0.4, label=r'Sim. envelope ($\gamma=%.2f$)' % (1 - alpha))
-#         # # plt.title("Model - %s" % key, fontsize=16)
-#         # plt.xlabel(r"$r~~\mathrm{[km]}$")
-#         # plt.ylabel(r"$L(r) = \sqrt{\frac{\hat{K}(r)}{\pi}}$")
-#         # plt.xlim([None, np.max(r_cat)])
-#         # plt.ylim([None, 1000])
-#         # plt.legend(loc=2, title=key)
-#         # plt.savefig(paths.get_kripley_figpath('L', 10, key))
-#         # plt.show()
-#
-#         R_pcf = r_cat[1:]
-#         pcf_sims = []
-#         for k in K_sims:
-#             # print(key, k[:10])
-#             interpolant = si.BSpline(R_pcf, k[1:], k=3).derivative(1)
-#             # print(interpolant(R_pcf) / (2*np.pi) / R_pcf)
-#             pcf_sims.append(interpolant(R_pcf) / (2*np.pi) / R_pcf)
-#
-#         fit = si.BSpline(R_pcf, K_cat[1:], k=3).derivative(1)
-#         pcf_cat = fit(R_pcf) / 2 / np.pi / R_pcf  # todo
-#
-#         pcf_avg = np.mean(pcf_sims, axis=0)
-#         pcf_up = np.quantile(pcf_sims, 1 - alpha/2, axis=0)
-#         pcf_down = np.quantile(pcf_sims, alpha/2, axis=0)
-#         # pcf_over = (pcf_cat > pcf_up)*(pcf_cat - pcf_up) +\
-#         #            (pcf_down < pcf_cat)*(pcf_cat < pcf_up)*0 +\
-#         #            (pcf_cat < pcf_down)*(pcf_cat - pcf_down)
-#         # pcf_over[np.isnan(pcf_over)] = 0.
-#         # pcf_diff[key] = pcf_over
-#         print(len(pcf_sims))
-#         for i in pcf_sims:
-#             sns.lineplot(x=R_pcf, y=i, lw=0.05, color='black', ls='--')
-#         sns.lineplot(x=R_pcf, y=pcf_cat, color='r', label='Observed catalog')
-#         g = sns.lineplot(x=R_pcf, y=pcf_avg, label='Sim. average')
-#         plt.fill_between(R_pcf, pcf_down, pcf_up, color='gray', alpha=0.2, label=r'Sim. envelope ($\alpha=%.2f$)' % (1-alpha))
-#         plt.title("Model - %s" % key, fontsize=16)
-#         plt.ylim([-1, None])
-#         plt.xlim([-1, 100])
-#         plt.xlabel(r"$r~~\mathrm{[km]}$")
-#         plt.ylabel(r"$g(r) = \frac{1}{2\pi r}\,\frac{dK(r)}{dr}$")
-#         plt.legend(loc=4)
-#         plt.savefig(paths.get_kripley_figpath('pcf', 10, key))
-#         plt.show()
-#         #
-#
-#     # b = plot_combined(L_diff, pcf_diff, r_sims, pcfr_sims, order=None)
-#     # plt.show()
-#
-#
-# def plot_combined(A, B, x, xx, order='inc'):
-#     sns.set_style("dark", {"axes.facecolor": ".9", 'font.family': 'Ubuntu'})
-#     from matplotlib import cm
-#
-#     figsize = (10,5)
-#     fig, ax = plt.subplots(figsize=figsize)
-#     xlims = []
-#     range_ = [np.min(np.array([i for i in A.values()]).ravel()),
-#               np.max(np.array([i for i in A.values()]).ravel())]
-#
-#
-#     n = 0
-#
-#     if order is None:
-#         iter_array = A.keys()
-#     elif order == 'inc':
-#         model_order = np.argsort([np.sum(i != 0) for i in A.values()])
-#         iter_array = [list(A.keys())[i] for i in model_order]
-#
-#     range_ = [-np.max(np.array([i for i in A.values()])), np.max(np.array([i for i in A.values()]))]
-#     for index, key in enumerate(iter_array):
-#         vals = A[key]
-#         vals[np.isnan(vals)] = 0
-#         xamp = 1.5
-#         new_vals = (vals)/(range_[1])*xamp - 0.5
-#         # ax.fill([index]*len(new_vals), new_vals)
-#
-#         xmin, xmax = index - xamp, index + xamp
-#         ymin, ymax = min(x), max(x)
-#
-#         y = index -0.5 -  new_vals
-#
-#         img_data = np.flip(np.linspace(range_[0], range_[1], 100))
-#         img_data = img_data.reshape(img_data.size, 1).T
-#         im = ax.imshow(img_data, aspect='auto', origin='lower', cmap=plt.cm.coolwarm,
-#                        extent=[xmin, xmax, ymin, ymax], zorder=n, vmin=-250, vmax=250)
-#         b = ax.fill(np.append(y, index), np.append(x, x[-1]), facecolor='none', edgecolor='none', zorder=n)
-#         for i in b:
-#             im.set_clip_path(i)
-#         n += 1
-#         ax.fill_betweenx(x, index - 0.5 - new_vals, [index]*len(vals),
-#                              facecolor='none', edgecolor='gray', alpha=0.8,
-#                              where = (vals!=0), interpolate=True, zorder=n)
-#
-#         plt.axvline(index, c='black',zorder=n, lw=0.9)
-#     plt.grid()
-#
-#     cba = plt.colorbar(im, shrink=0.5, fraction=0.03, pad=0.03)
-#     cba.ax.set_title('$L(r)$', pad=15)
-#         # plot and clip the imag
-#
-#
-#
-#
-#
-#
-#     n = 0
-#     range_ = [0,
-#               np.sqrt(np.abs(np.max(np.array([i for i in B.values()]).ravel())))]
-#     for index, key in enumerate(iter_array):
-#
-#         vals = B[key]
-#         vals[np.isnan(vals)] = 0
-#
-#         vals = np.sqrt(np.abs(vals))
-#         vals[np.isnan(vals)] = 0
-#         vals[-1] = 0
-#         xamp = 1.2
-#         new_vals = (vals) / (range_[1]) * xamp - 0.5
-#
-#         xmin, xmax = index - xamp, index
-#         ymin, ymax = min(xx), max(xx)
-#
-#
-#         y = index - 0.5 - new_vals
-#         img_data = np.linspace( range_[1], range_[0], 100)
-#         img_data = np.flip(np.linspace(range_[0], range_[1], num=100))
-#         img_data = img_data.reshape(img_data.size, 1).T
-#         # plot and clip the imag
-#         im = ax.imshow(img_data, aspect='auto', origin='lower', cmap=plt.cm.Greens,
-#                        extent=[xmin, xmax, ymin, ymax], alpha=0.9, zorder=n, vmax=25)
-#         b = ax.fill(y, xx, facecolor='none', edgecolor='none', zorder=n)
-#         for i in b:
-#             im.set_clip_path(i)
-#         n += 1
-#         a = ax.fill_betweenx(xx, y, [index] * len(vals),
-#                              facecolor='none', edgecolor='gray', alpha=0.8,
-#                              where=(vals != 0), interpolate=True, zorder=n)
-#
-#     cba = fig.colorbar(im,  shrink=0.5, fraction=0.03, pad=0.03)
-#     cba.ax.set_title('$\sqrt{g(r)}$', pad=15)
-#
-#
-#     ax.set_xlim([-1, 19])
-#     ax.set_ylim([-10, 800])
-#
-#     # plt.gca().invert_yaxis()
-#
-#     ax.set_xticklabels([key for key in iter_array], rotation=45, ha='right')
-#     ax.set_xticks(numpy.arange(len(A)))
-#     # ax.xaxis.tick_top()
-#     ax.set_ylabel("$r\,[\mathrm{km}]$")
-#     # plt.title("Ripley's L and Pair Correlation Functions")
-#     plt.tight_layout()
-#     plt.savefig(paths.get_kripley_figpath('Total', 10, format='png'), dpi=300)
-#     plt.show()
-#
-#     return b
-#
+    interpolation = scint.BSpline(r_i, k_i, k=k_fit).derivative(1)
+    pcf_i_ = interpolation(r_pcf) / (2 * np.pi) / r_pcf
+    pcf_i = np.zeros(len(r_i))
+    pcf_i[ind:-degree] = pcf_i_
+
+    return k_i, l_i, pcf_i
 
 
-def k_ripley_test(model, catalog, polygon='region_it.txt', nsim=10, r_disc=10, nproc=16):
+def k_ripley_test(model, catalog, polygon='region_it.txt', nsim=10, r_disc=50,
+                  nproc=16):
 
     catalog = np.stack((catalog.get_longitudes(), catalog.get_latitudes())).T
     n_events = catalog.shape[0]
 
     r = np.linspace(0, 1, r_disc)**2*800
-    k_eval_cat = K_ripley(catalog, model, polygon, r=r)
-    r_cat = list(k_eval_cat[0])
-    k_cat = list(k_eval_cat[2])
+    k_eval_cat = k_ripley(catalog, model, polygon, k_fit=1, r=r)
+    k_cat = np.array(k_eval_cat[0])
+    l_cat = np.array(k_eval_cat[1])
+    pcf_cat = np.array(k_eval_cat[2])
 
-    sim_catalogs = [(simulate(model, n_events), model, polygon, r) for i in range(nsim)]
+    sim_catalogs = [(simulate(model, n_events), model, polygon, r)
+                    for i in np.arange(nsim)]
 
-    r_sims = []
-    k_sims = []
     print('Processing model %s' % model.name)
     start = time.process_time()
     p = Pool(nproc)
-    Starmap = p.starmap(K_ripley, sim_catalogs)
+    starmap = p.starmap(k_ripley, sim_catalogs)
     p.close()
-    for K in Starmap:
-        rk_i = list(K[0])
-        K_i = list(K[2])
-        r_sims.append(rk_i)
-        k_sims.append(K_i)
 
-    assert numpy.allclose(np.mean(r_sims, axis=0), np.array(r_sims[0]))
-    results = {'k_sims': k_sims,
-               'r_sims': r_sims,
+    k_sims = np.array([row[0] for row in starmap])
+    l_sims = np.array([row[1] for row in starmap])
+    pcf_sims = np.array([row[2] for row in starmap])
+
+    results = {'r': r,
+               'k_sims': k_sims,
+               'l_sims': l_sims,
+               'pcf_sims': pcf_sims,
                'k_cat': k_cat,
-               'r_cat': r_cat}
+               'l_cat': l_cat,
+               'pcf_cat': pcf_cat}
     print(f'Finished in {time.process_time() - start:.1f}')
 
     return results
 
-import h5py
+
+def main():
+
+    cfg_file = os.path.join('config.yml')
+    experiment = Experiment.from_yml(cfg_file)
+    experiment.stage_models()
+    time_window = timewindow2str(experiment.timewindows[0])
+    models = [i.get_forecast(time_window) for i in experiment.models]
+    for model in models:
+        res = k_ripley_test(models[0], experiment.catalog)
+        ripley2hdf5(res, os.path.join('results', f'K_{model.name}.hdf5'))
 
 
-
-def ripley2hdf5(results, fname, grp='',):
-
-    k_sims = np.array(results['k_sims'])
-    r_sims = np.array(results['r_sims'])
-    k_cat = np.array(results['k_cat'])
-    r_cat = np.array(results['r_cat'])
-
-    with h5py.File(fname, 'a') as hfile:
-
-        hfile.require_dataset(f'{grp}/k_sims', shape=k_sims.shape, dtype=float)
-        hfile[f'{grp}/k_sims'][:] = k_sims
-
-        hfile.require_dataset(f'{grp}/r_sims', shape=r_sims.shape, dtype=float)
-        hfile[f'{grp}/r_sims'][:] = r_sims
-
-        hfile.require_dataset(f'{grp}/k_cat', shape=k_cat.shape, dtype=float)
-        hfile[f'{grp}/k_cat'][:] = k_cat
-
-        hfile.require_dataset(f'{grp}/r_cat', shape=r_cat.shape, dtype=float)
-        hfile[f'{grp}/r_cat'][:] = r_cat
-
-
-def read_hdf5(fname, group=''):
-
-    with h5py.File(fname, 'r') as db:
-        k_sims = db[f'{group}/k_sims'][:]
-        r_sims = db[f'{group}/r_sims'][:]
-        k_cat = db[f'{group}/k_cat'][:]
-        r_cat = db[f'{group}/r_cat'][:]
-    results = {'k_sims': k_sims,
-               'r_sims': r_sims,
-               'k_cat': k_cat,
-               'r_cat': r_cat}
-    return results
-
-
-if __name__ == "__main__":
-    timewindow = '2010-01-01_2020-01-01'
-    cfg_file = os.path.join(os.path.dirname(__file__), '../../runs/total', 'config.yml')
-    Exp = Experiment.from_yml(cfg_file)
-    Exp.stage_models()
-    models = [i.get_forecast(timewindow) for i in Exp.models]
-
-    # a = k_ripley_test(models[0], Exp.catalog)
-    # ripley2hdf5(a, 'aaa.hdf5')
-
-    results = read_hdf5('aaa.hdf5')
-
-    # with open(paths.get_kripley_result_path('K_%s' % nsim, 10), 'wb') as file_:
-    #     pickle.dump(Results, file_)
-#     Results = run(nsim=100, nproc=12)
-#     Results = run(nsim=500, nproc=12)
-#     Results = run(nsim=1000, nproc=12)
-#     Results = run(nsim=2000, nproc=12)
-
-    # with open(paths.get_kripley_result_path('K', 10), 'rb') as file_:
-    #     Results = pickle.load(file_)
-    #
-    # a = plot_results(Results)
-
+if __name__ == '__main__':
+    main()
