@@ -1,0 +1,14 @@
+{
+    "name": "Brier score",
+    "sim_name": "DBM",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": null,
+    "observed_statistic": -0.00011378260027409186,
+    "test_distribution": [
+        0
+    ],
+    "status": "",
+    "min_mw": null,
+    "type": "EvaluationResult"
+}

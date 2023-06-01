@@ -1,0 +1,18 @@
+{
+    "name": "Poisson N-Test",
+    "sim_name": "HALM",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.061142243222557235,
+        0.9608762163767786
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "poisson",
+        16.93182644176194
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

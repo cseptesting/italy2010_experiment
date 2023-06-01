@@ -1,0 +1,18 @@
+{
+    "name": "Poisson N-Test",
+    "sim_name": "MPS04",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.2001067025401344,
+        0.853512754105731
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "poisson",
+        19.81189859999999
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

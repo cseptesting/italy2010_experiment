@@ -1,0 +1,18 @@
+{
+    "name": "Poisson N-Test",
+    "sim_name": "TripleS-CSI",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.0028583766901960628,
+        0.9986010605398551
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "poisson",
+        12.651395404797139
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

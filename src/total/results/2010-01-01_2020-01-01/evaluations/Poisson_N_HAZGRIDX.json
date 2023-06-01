@@ -1,0 +1,18 @@
+{
+    "name": "Poisson N-Test",
+    "sim_name": "HAZGRIDX",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.0021486012802069965,
+        0.9989711206868992
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "poisson",
+        12.363062835613599
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

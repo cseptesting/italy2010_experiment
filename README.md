@@ -28,3 +28,22 @@ git clone https://github.com/SCECcode/pycsep.git --branch=master --depth=1
 cd pycsep
 pip install -e .
 ```
+
+
+## Docker
+
+### Build
+
+```
+docker build \
+--build-arg USERNAME=$USER \
+--build-arg USER_UID=$(id -u) \
+--build-arg USER_GID=$(id -g) \
+-t floatitaly .
+```
+### Run
+
+```
+docker run -it --rm --volume $PWD:/usr/src/float_italy:rw floatitaly /bin/bash
+
+```

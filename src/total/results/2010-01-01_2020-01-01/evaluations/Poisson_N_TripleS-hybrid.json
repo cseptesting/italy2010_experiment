@@ -1,0 +1,18 @@
+{
+    "name": "Poisson N-Test",
+    "sim_name": "TripleS-hybrid",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.04579450359455439,
+        0.9715362126357445
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "poisson",
+        16.38858114446417
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}
