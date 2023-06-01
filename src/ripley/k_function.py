@@ -147,7 +147,7 @@ def k_ripley(points, model, polygon, r, norm_power=2, k_fit=2, plot=False):
     return k_i, l_i, pcf_i
 
 
-def k_ripley_test(model, catalog, polygon='region_it.txt', nsim=2000, r_disc=200,
+def k_ripley_test(model, catalog, polygon='region_it.txt', nsim=2000, r_disc=100,
                   alpha=0.05):
 
     print('Processing model %s' % model.name)
