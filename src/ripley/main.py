@@ -11,10 +11,11 @@ def main():
     time_window = timewindow2str(experiment.timewindows[0])
     models = [i.get_forecast(time_window) for i in experiment.models]
     os.makedirs('results', exist_ok=True)
+
     for model in models:
         res = k_ripley_test(model, experiment.catalog,
-                            nsim=10,
-                            r_disc=10)
+                            nsim=100,
+                            r_disc=100)
         ripley2hdf5(res, os.path.join('results', f'K_{model.name}.hdf5'))
 
 

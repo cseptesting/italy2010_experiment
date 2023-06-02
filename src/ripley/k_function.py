@@ -35,7 +35,7 @@ def simulate(model, number_events):
 
     Lons = lons[ind_sim].repeat(sim_cat[ind_sim])
     Lats = lats[ind_sim].repeat(sim_cat[ind_sim])
-    noise = np.random.normal(0.0, 0.04, (Lons.shape[0], 2))
+    noise = np.random.uniform(-0.04999, 0.04999, (Lons.shape[0], 2))
     events = np.array([Lons, Lats]).T + noise
 
     return events
@@ -53,7 +53,7 @@ def lonlat2mercator(points):
 
 def ripley2hdf5(results, fname, grp='',):
 
-    with h5py.File(fname, 'a') as hfile:
+    with h5py.File(fname, 'w') as hfile:
         for i, j in results.items():
             if isinstance(j, (list, np.ndarray)):
                 array = np.array(j)
