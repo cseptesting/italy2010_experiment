@@ -14,9 +14,11 @@ def main():
 
     for model in models:
         res = k_ripley_test(model, experiment.catalog,
-                            nsim=100,
+                            nsim=2000,
                             r_disc=100)
         ripley2hdf5(res, os.path.join('results', f'K_{model.name}.hdf5'))
+
+    print('K-Ripley analysis completed')
 
 
 if __name__ == '__main__':
