@@ -1,53 +1,52 @@
 FROM rocker/r-base:4.0.4
 
+# Set group and user
 ARG USERNAME=italy
 ARG USER_UID=1100
 ARG USER_GID=$USER_UID
-RUN groupadd --non-unique -g $USER_GID $USERNAME \
-    && useradd -u $USER_UID -g $USER_GID -s /bin/sh -m $USERNAME
+RUN groupadd -o -g $USER_GID $USERNAME \
+    && useradd -o -u $USER_UID -g $USER_GID -s /bin/sh -m $USERNAME
 
 
+# Set path, env and requirements
 WORKDIR /usr/src/kripley/
+ENV CONDA_PATH=/usr/mambaforge
+ENV PATH="$CONDA_PATH/bin:${PATH}"
+ENV CONDA_ENV=kripley
+COPY --chown=$USER_UID:$USER_GID environment.yaml ./
 
-
+# Get basic OS libs
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git wget &&  \
     rm -rf /var/lib/apt/lists/*
 
-COPY --chown=$USER_UID:$USER_GID extra_reqs.txt ./
-
-ENV CONDA_PATH=/usr/miniconda3
-ENV PATH="$CONDA_PATH/bin:${PATH}"
-ENV CONDA_ENV=kripley
-
-
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-    && bash Miniconda3-latest-Linux-x86_64.sh -b -p $CONDA_PATH\
-    && rm -f Miniconda3-latest-Linux-x86_64.sh \
-    && echo "Running $(conda --version)" && \
+# Set up python (conda) environment
+RUN wget https://github.com/conda-forge/miniforge/releases/download/23.1.0-1/Mambaforge-23.1.0-1-Linux-x86_64.sh && \
+    bash Mambaforge-23.1.0-1-Linux-x86_64.sh -b -p $CONDA_PATH && \
+    rm -f Mambaforge-23.1.0-1-Linux-x86_64.sh && \
+    echo "Running $(conda --version)" && \
     conda init bash && \
     . /root/.bashrc && \
     conda update conda && \
-    conda create -n $CONDA_ENV && \
-    conda activate $CONDA_ENV && \
-    conda install python=3.10 pip &&  \
-    conda install -c conda-forge pycsep -y &&\
-    pip install -r extra_reqs.txt && \
-    git clone https://github.com/cseptesting/floatcsep.git  --branch=main  \
-    --depth=1 && pip install floatcsep/
+    conda env create -f environment.yaml && \
+    conda activate $CONDA_ENV
 
-
+# Set up R dependencies
 RUN Rscript -e "nproc <- as.integer(commandArgs(trailingOnly = TRUE)[1]); \
                 install.packages('remotes', Ncpus=nproc) ; \
                 require(remotes); \
                 install_version('spatstat.core', version = '2.2-0', Ncpus=nproc); \
-                install_version('spatstat', version = '2.2-0', Ncpus=nproc)" $(nproc)
+                install_version('spatstat.geom', version = '2.2-0', Ncpus=nproc)" $(nproc)
 
+# Unzip models into the same relative path as Local repo
 ADD --chown=$USER_UID:$USER_GID models.tar.gz ../../
+RUN chown -R $USER_UID:$USER_GID /usr/models/
 
+## Running as user
 USER $USERNAME
 RUN conda init bash && . /home/$USERNAME/.bashrc
 
+# Entrypoint runs the code immediately
 ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "kripley",\
-            "python", "k_function.py"]
+            "python", "main.py"]
 
