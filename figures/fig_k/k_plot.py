@@ -72,7 +72,6 @@ def plot_results(result, savefolder='figs', alpha=0.05, show=False,
     if show:
         plt.show()
 
-
     plt.figure(figsize=figsize)
     for i in l_sims:
         sns.lineplot(x=r, y=i, lw=0.05, color='black', ls='--')
@@ -130,7 +129,8 @@ def plot_combined(total_results, savefolder='figs', alpha=0.05, order='inc'):
     elif order == 'inc':
         model_order = np.argsort([np.sum(i != 0) for i in A.values()])
         iter_array = [list(A.keys())[i] for i in model_order]
-
+    else:
+        iter_array = order
     range_ = [-np.max(np.array([i for i in A.values()])),
               np.max(np.array([i for i in A.values()]))]
     for index, key in enumerate(iter_array):
@@ -210,7 +210,8 @@ def plot_combined(total_results, savefolder='figs', alpha=0.05, order='inc'):
 
 
 if __name__ == "__main__":
-    exp_path = os.path.join('../../src', 'ripley')
+    exp_path = os.path.join('../../src', 'total')
+    ripley_path = os.path.join('../../src', 'ripley')
     cfg_file = os.path.join(exp_path, 'config.yml')
     experiment = Experiment.from_yml(cfg_file)
     experiment.stage_models()
@@ -222,14 +223,17 @@ if __name__ == "__main__":
     l_offset = dict.fromkeys([i.name for i in models])
     pcf_offset = dict.fromkeys([i.name for i in models])
 
-    # order = [i.observed_statistics for i in experiment.read_results(experiment.tests[-4], time_window)]
-    for model in models:
-        results[model.name] = read_hdf5(os.path.join(exp_path, 'results',
+    for i, model in enumerate(models):
+        results[model.name] = read_hdf5(os.path.join(ripley_path,
+                                                     'results',
                                                      f'K_{model.name}.hdf5'))
         results[model.name]['name'] = model.name
         plot_results(results[model.name])
-    exp_path = os.path.join('../../src', 'ripley')
-    cfg_file = os.path.join(exp_path, 'config.yml')
-    plot_combined(results)
+
+    order = [(i.sim_name, i.observed_statistic) for i in
+             experiment.read_results(experiment.tests[-4], time_window)]
+    order = [order[i][0] for i in np.flip(np.argsort([i[1] for i in order]))]
+
+    plot_combined(results, order=order)
 
 
