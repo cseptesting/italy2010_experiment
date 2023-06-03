@@ -5,6 +5,7 @@ from k_function import k_ripley_test, ripley2hdf5
 
 def main():
 
+    print('Starting K-Ripley analysis')
     cfg_file = os.path.join('config.yml')
     experiment = Experiment.from_yml(cfg_file)
     experiment.stage_models()

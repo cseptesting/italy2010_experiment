@@ -210,22 +210,26 @@ def plot_combined(total_results, savefolder='figs', alpha=0.05, order='inc'):
 
 
 if __name__ == "__main__":
-    exp_path = os.path.join('../../runs', 'ripley')
+    exp_path = os.path.join('../../src', 'ripley')
     cfg_file = os.path.join(exp_path, 'config.yml')
     experiment = Experiment.from_yml(cfg_file)
     experiment.stage_models()
+    experiment.set_tasks()
     time_window = timewindow2str(experiment.timewindows[0])
-    models = [i.get_forecast(time_window) for i in experiment.models]
+    models = experiment.models
     results = {}
 
     l_offset = dict.fromkeys([i.name for i in models])
     pcf_offset = dict.fromkeys([i.name for i in models])
+
+    # order = [i.observed_statistics for i in experiment.read_results(experiment.tests[-4], time_window)]
     for model in models:
         results[model.name] = read_hdf5(os.path.join(exp_path, 'results',
                                                      f'K_{model.name}.hdf5'))
         results[model.name]['name'] = model.name
         plot_results(results[model.name])
-
+    exp_path = os.path.join('../../src', 'ripley')
+    cfg_file = os.path.join(exp_path, 'config.yml')
     plot_combined(results)
 
 

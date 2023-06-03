@@ -93,6 +93,7 @@ def k_ripley(points, model, polygon, r, norm_power=2, k_fit=2, plot=False):
 
     # Get the model rates
     rates = model.spatial_counts(cartesian=True)
+    rates[rates == 0] = 1e-9
     rates_array = robjects.FloatVector(rates.T.ravel())
     rates_mat = robjects.r['matrix'](rates_array, nrow=rates.shape[0])
     image = spat_geom.im(rates_mat, Xregion_array, Yregion_array)
