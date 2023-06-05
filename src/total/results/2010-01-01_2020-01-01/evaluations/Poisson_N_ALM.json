@@ -1,0 +1,18 @@
+{
+    "name": "Poisson N-Test",
+    "sim_name": "ALM",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.04084694925785981,
+        0.9748940394373476
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "poisson",
+        16.185424321406536
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

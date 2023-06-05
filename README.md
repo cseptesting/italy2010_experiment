@@ -1,17 +1,49 @@
-# Floating Experiment - Italy time independent
-
+`# Floating Experiment - Italy time independent
+`
 
 ## Install
-create conda venv fe_italy_ti
+
+Create working environment
 ```
-conda create -n fe_italy 
+conda create -n float_italy 
+conda activate float_italy
 ```
 
+Install pyCSEP
 ```
-git clone git@git.gfz-potsdam.de:csep-group/fecsep.git --branch=dev --depth=1
+conda install -c conda-forge pycsep 
+```
+
+Install floatCSEP
+```
+git clone https://github.com/cseptesting/floatcsep.git  --branch=main --depth=1
 cd fecsep
-conda env update --file environment.yml --prune
 pip install -e .
+```
+
+
+If the latest `pycsep` commit is needed
+```
 git clone https://github.com/SCECcode/pycsep.git --branch=master --depth=1
-cd fecsep
+cd pycsep
+pip install -e .
+```
+
+
+## Docker
+
+### Build
+
+```
+docker build \
+--build-arg USERNAME=$USER \
+--build-arg USER_UID=$(id -u) \
+--build-arg USER_GID=$(id -g) \
+-t floatitaly .
+```
+### Run
+
+```
+docker run -it --rm --volume $PWD:/usr/src/float_italy:rw floatitaly /bin/bash
+
 ```

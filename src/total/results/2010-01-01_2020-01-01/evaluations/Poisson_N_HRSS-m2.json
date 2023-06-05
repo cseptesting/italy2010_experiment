@@ -1,0 +1,18 @@
+{
+    "name": "Poisson N-Test",
+    "sim_name": "HRSS-m2",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.06968978217166255,
+        0.9547987204678778
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "poisson",
+        17.19330831888327
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

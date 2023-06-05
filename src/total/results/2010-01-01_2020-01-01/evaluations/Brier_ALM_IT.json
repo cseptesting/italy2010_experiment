@@ -1,0 +1,14 @@
+{
+    "name": "Brier score",
+    "sim_name": "ALM_IT",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": null,
+    "observed_statistic": -0.00011396027454228562,
+    "test_distribution": [
+        0
+    ],
+    "status": "",
+    "min_mw": null,
+    "type": "EvaluationResult"
+}

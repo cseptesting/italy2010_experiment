@@ -1,0 +1,14 @@
+{
+    "name": "Brier score",
+    "sim_name": "TripleS-CPTI",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": null,
+    "observed_statistic": -0.00011374473960382189,
+    "test_distribution": [
+        0
+    ],
+    "status": "",
+    "min_mw": null,
+    "type": "EvaluationResult"
+}

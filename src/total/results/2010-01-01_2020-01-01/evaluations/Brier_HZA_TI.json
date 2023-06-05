@@ -1,0 +1,14 @@
+{
+    "name": "Brier score",
+    "sim_name": "HZA_TI",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": null,
+    "observed_statistic": -0.00011386023656907445,
+    "test_distribution": [
+        0
+    ],
+    "status": "",
+    "min_mw": null,
+    "type": "EvaluationResult"
+}
