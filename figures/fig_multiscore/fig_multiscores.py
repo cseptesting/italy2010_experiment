@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.patches as patches
 from matplotlib.lines import Line2D
 import seaborn
-from fecsep import experiment
+from floatcsep import experiment
 import json
 import csep
 from csep.models import EvaluationResult
@@ -165,14 +165,8 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
 
     ## Log-Likelihood
     models = [i.name for i in exp.models]
-
     ll_test = [i for i in exp.tests if i.name == 'Poisson_CL'][0]
-    # _, _ , paths = exp.prepare_paths()
-    LL = exp._read_results(ll_test, exp.timewindows[-1])
-    # LL = []
-    # for model in models:
-    #     with open(paths['evaluations']['Poisson_L'][model], 'r') as file_:
-    #         LL.append(EvaluationResult.from_dict(json.load(file_)))
+    LL = exp.read_results(ll_test, exp.timewindows[-1])
     ll_score = np.array([i.observed_statistic for i in LL])
     ll_label = r'$\mathcal{L}$'
 
@@ -181,53 +175,32 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
 
 
     ## Binomial_S
-    # BS = []
-    bs_test = [i for i in exp.tests if i.name == 'Binomial_S'][0]
-# _, _ , paths = exp.prepare_paths()
-    BS = exp._read_results(bs_test, exp.timewindows[-1])
-    # for model in models:
-    #     with open(paths['evaluations']['Binomial_S'][model], 'r') as file_:
-    #         BS.append(EvaluationResult.from_dict(json.load(file_)))
+    bs_test = [i for i in exp.tests if i.name == 'Binary_S'][0]
+    BS = exp.read_results(bs_test, exp.timewindows[-1])
     bs_score = np.array([i.observed_statistic for i in BS])
-
     bs_label = r'$\mathcal{S}_{B}$'
     if isinstance(lowcuts[1], (float, int)):
         bs_score[bs_score < lowcuts[1]] = lowcuts[1]
 
     ## Brier score
-    Brier_results = []
     Brier_test = [i for i in exp.tests if i.name == 'Brier'][0]
-# _, _ , paths = exp.prepare_paths()
-    Brier_results = exp._read_results(Brier_test, exp.timewindows[-1])
-
-    # for model in models:
-    #     with open(paths['evaluations']['Brier'][model], 'r') as file_:
-    #         Brier_results.append(EvaluationResult.from_dict(json.load(file_)))
+    Brier_results = exp.read_results(Brier_test, exp.timewindows[-1])
     Brier = np.array([i.observed_statistic for i in Brier_results])
     brier_label = r'$\mathcal{B}$'
     if isinstance(lowcuts[2], (float, int)):
         Brier[Brier < lowcuts[2]] = lowcuts[2]
+
     ## Consistency tests
     Consistency_Results = []
-
-    NN = exp._read_results([i for i in exp.tests if i.name == 'Poisson_N'][0], exp.timewindows[-1])
-    SS = exp._read_results([i for i in exp.tests if i.name == 'Poisson_S'][0], exp.timewindows[-1])
-    MM = exp._read_results([i for i in exp.tests if i.name == 'Poisson_M'][0], exp.timewindows[-1])
-    CL = exp._read_results([i for i in exp.tests if i.name == 'Poisson_CL'][0], exp.timewindows[-1])
+    NN = exp.read_results([i for i in exp.tests if i.name == 'Poisson_N'][0], exp.timewindows[-1])
+    SS = exp.read_results([i for i in exp.tests if i.name == 'Poisson_S'][0], exp.timewindows[-1])
+    MM = exp.read_results([i for i in exp.tests if i.name == 'Poisson_M'][0], exp.timewindows[-1])
+    CL = exp.read_results([i for i in exp.tests if i.name == 'Poisson_CL'][0], exp.timewindows[-1])
     for model in models:
-    # for n, m, s in zip(paths.get_csep_result('N', years),
-    #                    paths.get_csep_result('M', years),
-    #                    paths.get_csep_result('S', years)):
         n = [i for i in NN if i.sim_name == model][0]
         m = [i for i in MM if i.sim_name == model][0]
         s = [i for i in SS if i.sim_name == model][0]
         cl = [i for i in CL if i.sim_name == model][0]
-        # with open(paths['evaluations']['Poisson_N'][model], 'r') as file_:
-        #     n = EvaluationResult.from_dict(json.load(file_))
-        # with open(paths['evaluations']['Poisson_S'][model], 'r') as file_:
-        #     s = EvaluationResult.from_dict(json.load(file_))
-        # with open(paths['evaluations']['Poisson_M'][model], 'r') as file_:
-        #     m = EvaluationResult.from_dict(json.load(file_))
 
         model_cons = []
         if n.quantile[0] > p/2. and n.quantile[1] < 1-p/2.:
@@ -270,21 +243,18 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
 
     Axes = plot_legends(Axes, colors,  labels)
     # Axes.set_title('Test results - %i years' % (years) , pad=15, fontsize=14)
-    if savepath:
-        plt.savefig(savepath, dpi=300,  format='svg', transparent=True)
+    # if savepath:
+    #     plt.savefig(savepath, dpi=300,  format='svg', transparent=True)
     plt.show()
 
 
 
 if __name__ == '__main__':
-    cfg = '../../runs/total/config.yml'
+    cfg = '../../src/total/config.yml'
 
     exp = experiment.Experiment.from_yml(cfg)
-    # exp.set_test_date(exp.end_date)
-    exp.set_tests()
-    exp.set_models()
-    # exp.stage_models()
-    exp.prepare_paths()
+    exp.stage_models()
+    exp.set_tasks()
     p = 0.05
     labels = ['Log-score $\mathcal{L}$',
               'Binary-score $\mathcal{B}$',
@@ -297,10 +267,3 @@ if __name__ == '__main__':
                  format=['%i', '%i', '%.4e',],
                  lowcuts=[-210, -105, -0.0001139],
                  savepath='multiscore.svg')
-
-
-    # plot_results(5,
-    #               labels=labels,
-    #               format=['%i', '%i', '%.4e', '%.4e'],
-    #               lowcuts=[-140, -140, -0.00005428, -0.00005428],
-    #               savepath=paths.get_csep_figpath('Total', 5))

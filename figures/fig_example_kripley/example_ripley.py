@@ -8,19 +8,18 @@ from matplotlib.colors import BoundaryNorm
 from matplotlib.ticker import MaxNLocator
 import numpy as np
 from csep.utils.comcat import search
-import fecsep.utils
+import floatcsep.utils
 import csep
-import fecsep
-from fecsep import experiment
+import floatcsep
+from floatcsep import experiment
 import itertools
 from datetime import datetime
 import cartopy
 
 
-cfg = '../config_test.yml'
+cfg = '../../src/total/config.yml'
 exp = experiment.Experiment.from_yml(cfg)
-exp.set_tests()
-exp.set_models()
+exp.set_tasks()
 
 
 
@@ -59,7 +58,7 @@ sim_props = {'markersize': 8,
              'basemap': None,
              'alpha': 0.8}
 #
-cat = csep.load_catalog('../catalog_ml.json')
+cat = csep.load_catalog('../../catalogs/catalog_ml.json')
 region = csep.regions.italy_csep_region()
 cat.filter_spatial(region, in_place=True)
 
@@ -80,7 +79,7 @@ Events = np.array([[i, j] for i,j in zip(cat.get_longitudes(), cat.get_latitudes
 model_a = exp.get_model('HAZFX_BPT')
 model_b = exp.get_model('TripleS-CSI')
 
-tstring = fecsep.utils.timewindow2str(exp.timewindows[0])
+tstring = floatcsep.utils.timewindow2str(exp.timewindows[0])
 model_a.create_forecast(tstring)
 model_b.create_forecast(tstring)
 
@@ -149,9 +148,9 @@ sim = csep.core.poisson_evaluations._simulate_catalog(num_events_to_simulate, sa
 ind_sim = np.where(sim != 0)[0]  #todo fix 2 events per cell
 events_sim = np.array([forecast_b.get_longitudes()[ind_sim], forecast_b.get_latitudes()[ind_sim]]).T
 rates_sim = forecast_b.data[ind_sim]
-tuple = [ (1, 1, i[1], i[0], 5,10) for i in events_sim]
+tuple = [(1, 1, i[1], i[0], 5,10) for i in events_sim]
 sim_cat = csep.catalogs.CSEPCatalog(data=tuple)
-sim_cat.region=region
+sim_cat.region = region
 
 Ax = forecast_b.plot(plot_args=prop_forecast_b)
 Ax = cat.plot(ax=Ax, plot_args=cat_props)
