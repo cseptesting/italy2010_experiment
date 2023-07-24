@@ -193,11 +193,13 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
     ## Consistency tests
     Consistency_Results = []
     NN = exp.read_results([i for i in exp.tests if i.name == 'Poisson_N'][0], exp.timewindows[-1])
+    NB = exp.read_results([i for i in exp.tests if i.name == 'Negbinom_N'][0], exp.timewindows[-1])
     SS = exp.read_results([i for i in exp.tests if i.name == 'Poisson_S'][0], exp.timewindows[-1])
     MM = exp.read_results([i for i in exp.tests if i.name == 'Poisson_M'][0], exp.timewindows[-1])
     CL = exp.read_results([i for i in exp.tests if i.name == 'Poisson_CL'][0], exp.timewindows[-1])
     for model in models:
         n = [i for i in NN if i.sim_name == model][0]
+        nb = [i for i in NB if i.sim_name == model][0]
         m = [i for i in MM if i.sim_name == model][0]
         s = [i for i in SS if i.sim_name == model][0]
         cl = [i for i in CL if i.sim_name == model][0]
@@ -205,6 +207,9 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
         model_cons = []
         if n.quantile[0] > p/2. and n.quantile[1] < 1-p/2.:
             model_cons.append(r'$N$')
+        else:
+            if nb.quantile[0] > p/2. and nb.quantile[1] < 1-p/2.:
+                model_cons.append(r'$n$')
         if m.quantile > p:
             model_cons.append('$M$')
         if s.quantile > p:
@@ -233,7 +238,7 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
               'darkorange',
               'teal',
               'olivedrab']
-    print(ll_score, bs_score, Brier)
+
     Axes = plot_scores([ll_score, bs_score, Brier],
                        colors[:3],
                        [ll_label, bs_label, brier_label],
@@ -242,9 +247,8 @@ def plot_results(exp, labels, p=0.01, lowcuts=False, show=True,
     Axes = plot_all_consistencies(Axes, Consistency_Results, color=colors[3])
 
     Axes = plot_legends(Axes, colors,  labels)
-    # Axes.set_title('Test results - %i years' % (years) , pad=15, fontsize=14)
-    # if savepath:
-    #     plt.savefig(savepath, dpi=300,  format='svg', transparent=True)
+    if savepath:
+        plt.savefig(savepath, dpi=300,  format='svg', transparent=True)
     plt.show()
 
 
@@ -258,7 +262,7 @@ if __name__ == '__main__':
     p = 0.05
     labels = ['Log-score $\mathcal{L}$',
               'Binary-score $\mathcal{B}$',
-              'Quadratic-score $\mathcal{Q}$',
+              'Brier-score $\mathcal{Q}$',
               'Poisson Consistency \n $(p\geq%.2f)$' % p]
 
     plot_results(exp,
