@@ -27,8 +27,8 @@
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/catalog.png" />
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/magnitude_time.png" />
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/catalog.png" />
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/magnitude_time.png" />
 
 
 Evaluation catalog from 2010-01-01 00:00:00 until 2020-01-01 00:00:00. Earthquakes are filtered above Mw 5.0.
@@ -48,7 +48,7 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/2010-01-01_2020-01-01/figures/Poisson_N.png" width=480/>
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Poisson_N.png" width=480/>
 
 
 
@@ -56,7 +56,7 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/2010-01-01_2020-01-01/figures/Poisson_S.png" width=480/>
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Poisson_S.png" width=480/>
 
 
 
@@ -64,7 +64,7 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/2010-01-01_2020-01-01/figures/Poisson_M.png" width=480/>
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Poisson_M.png" width=480/>
 
 
 
@@ -72,7 +72,7 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/2010-01-01_2020-01-01/figures/Poisson_L.png" width=480/>
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Poisson_L.png" width=480/>
 
 
 
@@ -80,7 +80,7 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/2010-01-01_2020-01-01/figures/Poisson_CL.png" width=480/>
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Poisson_CL.png" width=480/>
 
 
 
@@ -88,7 +88,7 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/2010-01-01_2020-01-01/figures/Binary_S.png" width=480/>
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Binary_S.png" width=480/>
 
 
 
@@ -96,7 +96,7 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/2010-01-01_2020-01-01/figures/Brier.png" width=480/>
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Brier.png" width=480/>
 
 
 
@@ -104,7 +104,7 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/runs/total/results/2010-01-01_2020-01-01/figures/Matrix_T.png" width=384/>
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Matrix_T.png" width=384/>
 
 
 

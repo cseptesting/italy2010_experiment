@@ -49,11 +49,11 @@ Events = np.array([[i, j] for i, j in zip(cat.get_longitudes(),
                                           cat.get_latitudes())])
 tstring = floatcsep.utils.timewindow2str(exp.timewindows[0])
 
-raster_fn = '../basemap_3857.tif'
+raster_fn = 'basemap_3857.tif'
 rds = rxr.open_rasterio(raster_fn)
 os.makedirs('forecasts', exist_ok=True)
 
-for model in exp.models:
+for model in exp.models[:1]:
 
     model_name = model.name
     model.create_forecast(tstring)
@@ -81,7 +81,7 @@ fc_prop.update({'include_cbar': True,
                'cmap': 'magma',
                'alpha_exp': 0.3,
                'clim': [-7, 0],
-               'clabel': r'$\log_{10}\mu\,(M\geq 4.95)$',
+               'clabel': r'$\log_{10}\lambda_{M\geq4.95}$',
                'clabel_fontsize': 22,
                 'cticks_fontsize': 16,
                'projection': projection})
