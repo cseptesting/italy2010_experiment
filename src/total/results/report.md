@@ -7,6 +7,7 @@
       1. [Input catalog](#input_catalog)
    1. [Results](#results)
       1. [Poisson_N](#poisson_n)
+      1. [Negbinom_N](#negbinom_n)
       1. [Poisson_S](#poisson_s)
       1. [Poisson_M](#poisson_m)
       1. [Poisson_L](#poisson_l)
@@ -28,7 +29,7 @@
 
 
 <img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/catalog.png" />
-<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/magnitude_time.png" />
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/events.png" />
 
 
 Evaluation catalog from 2010-01-01 00:00:00 until 2020-01-01 00:00:00. Earthquakes are filtered above Mw 5.0.
@@ -36,6 +37,7 @@ Evaluation catalog from 2010-01-01 00:00:00 until 2020-01-01 00:00:00. Earthquak
 
 The following tests are applied to each of the experiment's forecasts. More information regarding the tests can be found [here](https://docs.cseptesting.org/getting_started/theory.html).
 * Poisson_N
+* Negbinom_N
 * Poisson_S
 * Poisson_M
 * Poisson_L
@@ -49,6 +51,14 @@ The following tests are applied to each of the experiment's forecasts. More info
 
 
 <img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Poisson_N.png" width=480/>
+
+
+
+### Negbinom_N  <a name="negbinom_n"></a>
+
+
+
+<img src="/home/pciturri/PycharmProjects/fe_italy_ti/src/total/results/2010-01-01_2020-01-01/figures/Negbinom_N.png" width=480/>
 
 
 

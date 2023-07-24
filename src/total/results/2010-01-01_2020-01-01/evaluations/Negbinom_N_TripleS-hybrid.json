@@ -1,0 +1,18 @@
+{
+    "name": "NBD N-Test",
+    "sim_name": "TripleS-hybrid",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.17557641653768452,
+        0.8488230681262215
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "negative_binomial",
+        16.38858114446417
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

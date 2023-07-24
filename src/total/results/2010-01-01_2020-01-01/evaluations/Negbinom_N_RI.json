@@ -1,0 +1,18 @@
+{
+    "name": "NBD N-Test",
+    "sim_name": "RI",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.0660878521381234,
+        0.9425537286166545
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "negative_binomial",
+        9.801559852942738
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

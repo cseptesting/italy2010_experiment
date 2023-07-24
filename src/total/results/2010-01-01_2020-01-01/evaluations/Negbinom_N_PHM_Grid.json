@@ -1,0 +1,18 @@
+{
+    "name": "NBD N-Test",
+    "sim_name": "PHM_Grid",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.10434633135450255,
+        0.9103065304454011
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "negative_binomial",
+        13.011554431297128
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

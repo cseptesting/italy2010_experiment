@@ -1,0 +1,18 @@
+{
+    "name": "NBD N-Test",
+    "sim_name": "HALM",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.19080543958668117,
+        0.8354710850212743
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "negative_binomial",
+        16.93182644176194
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

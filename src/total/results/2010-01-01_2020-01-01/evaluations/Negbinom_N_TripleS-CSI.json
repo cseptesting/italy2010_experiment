@@ -1,0 +1,18 @@
+{
+    "name": "NBD N-Test",
+    "sim_name": "TripleS-CSI",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.09883917880246229,
+        0.9149882898309303
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "negative_binomial",
+        12.651395404797139
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

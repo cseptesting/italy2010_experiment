@@ -1,0 +1,18 @@
+{
+    "name": "NBD N-Test",
+    "sim_name": "HAZGRIDX",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.09467835566307947,
+        0.9185177165404456
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "negative_binomial",
+        12.363062835613599
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

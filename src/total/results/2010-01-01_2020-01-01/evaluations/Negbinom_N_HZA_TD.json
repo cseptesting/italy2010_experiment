@@ -1,0 +1,18 @@
+{
+    "name": "NBD N-Test",
+    "sim_name": "HZA_TD",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.23030405190081837,
+        0.8005189067681604
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "negative_binomial",
+        18.1833988792818
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

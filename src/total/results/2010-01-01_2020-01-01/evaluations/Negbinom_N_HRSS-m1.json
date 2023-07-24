@@ -1,0 +1,18 @@
+{
+    "name": "NBD N-Test",
+    "sim_name": "HRSS-m1",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": [
+        0.0954244433342698,
+        0.9178853525308459
+    ],
+    "observed_statistic": 24,
+    "test_distribution": [
+        "negative_binomial",
+        12.41587852209833
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

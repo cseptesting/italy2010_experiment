@@ -1,0 +1,411 @@
+name: Complete Run
+path: ..
+config_file: config.yml
+rundir: results
+time_config:
+  start_date: 2010-01-01 00:00:00
+  end_date: 2020-01-01 00:00:00
+  exp_class: ti
+  timewindows:
+  - - 2010-01-01 00:00:00
+    - 2020-01-01 00:00:00
+region_config:
+  region: italy_csep_region
+  mag_min: 5.0
+  mag_max: 9.0
+  mag_bin: 0.1
+  depth_min: -2
+  depth_max: 30
+  depths:
+  - -2.0
+  - 30.0
+  magnitudes:
+  - 5.0
+  - 5.1
+  - 5.2
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - 5.7
+  - 5.8
+  - 5.9
+  - 6.0
+  - 6.1
+  - 6.2
+  - 6.3
+  - 6.4
+  - 6.5
+  - 6.6
+  - 6.7
+  - 6.8
+  - 6.9
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4
+  - 7.5
+  - 7.6
+  - 7.7
+  - 7.8
+  - 7.9
+  - 8.0
+  - 8.1
+  - 8.2
+  - 8.3
+  - 8.4
+  - 8.5
+  - 8.6
+  - 8.7
+  - 8.8
+  - 8.9
+  - 9.0
+catalog: results/catalog.json
+models:
+- HAZFX_BPT:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/akinci.HAZFX_BPT.italy.10yr.2010-01-01.xml
+    use_db: true
+- LTST:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/console-murru-falcone.LTST.italy.10yr.2010-01-01.xml
+    use_db: true
+- RI:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/nanjo.RI.italy.10yr.2010-01-01.xml
+    use_db: true
+- DBM:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/lombardi.DBM.italy.10yr.2010-01-01.xml
+    use_db: true
+- HAZGRIDX:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/akinci-lombardi.HAZGRIDX.italy.10yr.2010-01-01.xml
+    use_db: true
+- MPS04:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/meletti.MPS04.italy.10yr.2010-01-01.xml
+    use_db: true
+- MPS04after:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/meletti.MPS04after.italy.10yr.2010-01-01.xml
+    use_db: true
+- PHM_Grid:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/faenza.PHM_Grid.italy.10yr.2010-01-01.xml
+    use_db: true
+- PHM_Zone:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/faenza.PHM_Zone.italy.10yr.2010-01-01.xml
+    use_db: true
+- HZA_TD:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/chan.HZA_TD.italy.10yr.2010-01-01.xml
+    use_db: true
+- HZA_TI:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/chan.HZA_TI.italy.10yr.2010-01-01.xml
+    use_db: true
+- ALM:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/gulia-wiemer.ALM.italy.10yr.2010-01-01.xml
+    use_db: true
+- ALM_IT:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/schorlemmer-wiemer.ALM_IT.italy.10yr.2010-01-01.xml
+    use_db: true
+- HALM:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/gulia-wiemer.HALM.italy.10yr.2010-01-01.xml
+    use_db: true
+- HRSS-m2:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/werner.HRSS-m2.italy.10yr.2010-01-01.xml
+    use_db: true
+- HRSS-m1:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/werner.HRSS-m1.italy.10yr.2010-01-01.xml
+    use_db: true
+- TripleS-CPTI:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/zechar.TripleS-CPTI.italy.10yr.2010-01-01.xml
+    use_db: true
+- TripleS-hybrid:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/zechar.TripleS-hybrid.italy.10yr.2010-01-01.xml
+    use_db: true
+- TripleS-CSI:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/zechar.TripleS-CSI.italy.10yr.2010-01-01.xml
+    use_db: true
+tests:
+- Poisson_N:
+    func: csep.core.poisson_evaluations.number_test
+    plot_func:
+    - csep.utils.plots.plot_poisson_consistency_test:
+        plot_args:
+          title: N-test
+          title_fontsize: 16
+          figsize: !!python/tuple
+          - 5
+          - 6
+          xlabel: Event counts
+          linewidth: 0.5
+          capsize: 0
+          code: "import numpy\nimport matplotlib.ticker as tick\nfrom matplotlib.lines\
+            \ import Line2D\nimport seaborn\nimport matplotlib.pyplot as\
+            \ plt\nseaborn.set_style(\"white\", {\"axes.facecolor\": \"\
+            .9\", 'font.family': 'Ubuntu'})\nplt.rcParams.update({'xtick.bottom':\
+            \ True, 'axes.labelweight': 'bold',\n                     'xtick.labelsize':\
+            \ 8, 'ytick.labelsize': 8,\n                     'legend.fontsize':\
+            \ 9})\nax.axvline(results[0].observed_statistic, color='black',\
+            \ linewidth=1, linestyle='--')\nax.text(results[0].observed_statistic\
+            \ + 1, len(results) - 4.8, 'Events in 10 yrs.',  rotation=90)\n\
+            ax.set_xlim([0, ax.get_xlim()[1]])\nfor i, j in enumerate(results):\n\
+            \    ax.plot(j.test_distribution[1], len(results) - i - 1, 'ko',\
+            \ markersize=4)\nax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))\n\
+            legend_elements = [Line2D([0], [0], marker='o', lw=0,label='Mean\
+            \ rate', color='k', markersize=5),\n                   Line2D([0],\
+            \ [0], color='k', lw=1, label='95% conf.'),\n              \
+            \     Line2D([0], [1], color='k', ls='--', lw=1, label='Obs.\
+            \ events')]\nax.legend(handles=legend_elements, loc='lower right')\n"
+        plot_kwargs: {}
+- Negbinom_N:
+    func_kwargs:
+      variance: 64.54
+    func: floatcsep.extras.negative_binomial_number_test
+    plot_func:
+    - floatcsep.extras.plot_negbinom_consistency_test:
+        plot_args:
+          title: Negative Binomial N-test
+          title_fontsize: 16
+          figsize: !!python/tuple
+          - 5
+          - 6
+          xlabel: Event counts
+          linewidth: 0.5
+          capsize: 0
+          code: "import numpy\nimport matplotlib.ticker as tick\nfrom matplotlib.lines\
+            \ import Line2D\nimport seaborn\nimport matplotlib.pyplot as\
+            \ plt\nseaborn.set_style(\"white\", {\"axes.facecolor\": \"\
+            .9\", 'font.family': 'Ubuntu'})\nplt.rcParams.update({'xtick.bottom':\
+            \ True, 'axes.labelweight': 'bold',\n                     'xtick.labelsize':\
+            \ 8, 'ytick.labelsize': 8,\n                     'legend.fontsize':\
+            \ 9})\nax.axvline(results[0].observed_statistic, color='black',\
+            \ linewidth=1, linestyle='--')\nax.text(results[0].observed_statistic\
+            \ + 1, len(results) - 4.8, 'Events in 10 yrs.',  rotation=90)\n\
+            ax.set_xlim([0, ax.get_xlim()[1]])\nfor i, j in enumerate(results):\n\
+            \    ax.plot(j.test_distribution[1], len(results) - i - 1, 'ko',\
+            \ markersize=4)\nax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))\n\
+            legend_elements = [Line2D([0], [0], marker='o', lw=0,label='Mean\
+            \ rate', color='k', markersize=5),\n                   Line2D([0],\
+            \ [0], color='k', lw=1, label='95% conf.'),\n              \
+            \     Line2D([0], [1], color='k', ls='--', lw=1, label='Obs.\
+            \ events')]\nax.legend(handles=legend_elements, loc='lower right')\n"
+        plot_kwargs:
+          variance: 64.54
+- Poisson_S:
+    func_kwargs:
+      seed: 23
+      num_simulations: 10000
+    func: csep.core.poisson_evaluations.spatial_test
+    plot_func:
+    - csep.utils.plots.plot_poisson_consistency_test:
+        plot_args:
+          title: S-test
+          title_fontsize: 16
+          figsize: !!python/tuple
+          - 5
+          - 6
+          xlabel: Spatial log-likelihood
+          linewidth: 0.5
+          capsize: 0
+          code: "import numpy\nimport matplotlib.ticker as tick\nfrom matplotlib.lines\
+            \ import Line2D\nimport seaborn\nseaborn.set_style(\"white\"\
+            , {\"axes.facecolor\": \".9\", 'font.family': 'Ubuntu'})\n\n\
+            for i,j in enumerate(results):\n    ax.plot(numpy.mean(j.test_distribution),len(results)-i-1,\
+            \ 'ko', markersize=4)\n    ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))\n\
+            legend_elements = [Line2D([0], [0], marker='o', lw=0, label='Sim.\
+            \ expected value',\n                          color='k', markersize=2),\n\
+            \                   Line2D([0], [0], color='k', lw=1, label='Sim.\
+            \ 95% conf.'),\n                   Line2D([0], [1], color='green',\
+            \ marker='s',lw=0, markersize=4, label='Obs. Likelihood (passes)'),\n\
+            \                   Line2D([0], [1], color='red', marker='o',lw=0,\
+            \ markersize=4, label='Obs. Likelihood (fails)')]\nax.legend(handles=legend_elements,\
+            \ loc='lower left', fontsize=9)\n"
+        plot_kwargs:
+          one_sided_lower: true
+- Poisson_M:
+    func_kwargs:
+      seed: 23
+      num_simulations: 10000
+    func: csep.core.poisson_evaluations.magnitude_test
+    plot_func:
+    - csep.utils.plots.plot_poisson_consistency_test:
+        plot_args:
+          title: M-test
+          xlabel: Magnitude Log-Likelihood
+          figsize: !!python/tuple
+          - 5
+          - 6
+          title_fontsize: 16
+          linewidth: 0.5
+          capsize: 0
+          code: "import numpy\nimport matplotlib.ticker as tick\nfrom matplotlib.lines\
+            \ import Line2D\nimport seaborn\nseaborn.set_style(\"white\"\
+            , {\"axes.facecolor\": \".9\", 'font.family': 'Ubuntu'})\n\n\
+            for i,j in enumerate(results):\n    ax.plot(numpy.mean(j.test_distribution),len(results)-i-1,\
+            \ 'ko', markersize=4)\n    ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))\n\
+            legend_elements = [Line2D([0], [0], marker='o', lw=0, label='Sim.\
+            \ expected value',\n                          color='k', markersize=2),\n\
+            \                   Line2D([0], [0], color='k', lw=1, label='Sim.\
+            \ 95% conf.'),\n                   Line2D([0], [1], color='green',\
+            \ marker='s',lw=0, markersize=4, label='Obs. Likelihood (passes)'),\n\
+            \                   Line2D([0], [1], color='red', marker='o',lw=0,\
+            \ markersize=4, label='Obs. Likelihood (fails)')]\nax.legend(handles=legend_elements,\
+            \ loc='lower left', fontsize=9)\n"
+        plot_kwargs:
+          one_sided_lower: true
+- Poisson_L:
+    func_kwargs:
+      seed: 23
+      num_simulations: 10000
+    func: csep.core.poisson_evaluations.likelihood_test
+    plot_func:
+    - csep.utils.plots.plot_poisson_consistency_test:
+        plot_args:
+          title: L-test
+          xlabel: Log-Likelihood
+          figsize: !!python/tuple
+          - 5
+          - 6
+          title_fontsize: 16
+          linewidth: 0.5
+          capsize: 0
+          code: "import numpy\nimport matplotlib.ticker as tick\nfrom matplotlib.lines\
+            \ import Line2D\nimport seaborn\nseaborn.set_style(\"white\"\
+            , {\"axes.facecolor\": \".9\", 'font.family': 'Ubuntu'}) \n\n\
+            for i,j in enumerate(results):\n    ax.plot(numpy.mean(j.test_distribution),len(results)-i-1,\
+            \ 'ko', markersize=4)\n    ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))\n\
+            legend_elements = [Line2D([0], [0], marker='o', lw=0, label='Sim.\
+            \ expected value',\n                          color='k', markersize=2),\n\
+            \                   Line2D([0], [0], color='k', lw=1, label='Sim.\
+            \ 95% conf.'),\n                   Line2D([0], [1], color='green',\
+            \ marker='s',lw=0, markersize=4, label='Obs. Likelihood (passes)'),\n\
+            \                   Line2D([0], [1], color='red', marker='o',lw=0,\
+            \ markersize=4, label='Obs. Likelihood (fails)')]\nax.legend(handles=legend_elements,\
+            \ loc='lower right', fontsize=9)\n"
+        plot_kwargs:
+          one_sided_lower: true
+- Poisson_CL:
+    func_kwargs:
+      seed: 23
+      num_simulations: 10000
+    func: csep.core.poisson_evaluations.conditional_likelihood_test
+    plot_func:
+    - csep.utils.plots.plot_poisson_consistency_test:
+        plot_args:
+          title: CL-test
+          xlabel: Log-Likelihood
+          figsize: !!python/tuple
+          - 5
+          - 6
+          title_fontsize: 16
+          linewidth: 0.5
+          capsize: 0
+          code: "import numpy\nimport matplotlib.ticker as tick\nfrom matplotlib.lines\
+            \ import Line2D\nimport seaborn\nseaborn.set_style(\"white\"\
+            , {\"axes.facecolor\": \".9\", 'font.family': 'Ubuntu'}) \n\n\
+            for i,j in enumerate(results):\n    ax.plot(numpy.mean(j.test_distribution),len(results)-i-1,\
+            \ 'ko', markersize=4)\n    ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))\n\
+            legend_elements = [Line2D([0], [0], marker='o', lw=0, label='Sim.\
+            \ expected value',\n                          color='k', markersize=2),\n\
+            \                   Line2D([0], [0], color='k', lw=1, label='Sim.\
+            \ 95% conf.'),\n                   Line2D([0], [1], color='green',\
+            \ marker='s',lw=0, markersize=4, label='Obs. Likelihood (passes)'),\n\
+            \                   Line2D([0], [1], color='red', marker='o',lw=0,\
+            \ markersize=4, label='Obs. Likelihood (fails)')]\nax.legend(handles=legend_elements,\
+            \ loc='lower left', fontsize=9)\n"
+        plot_kwargs:
+          one_sided_lower: true
+- Binary_S:
+    func_kwargs:
+      seed: 23
+      num_simulations: 10000
+    func: floatcsep.extras.binomial_spatial_test
+    plot_func:
+    - csep.utils.plots.plot_poisson_consistency_test:
+        plot_args:
+          title: $\mathcal{S}_{B}-$test
+          title_fontsize: 16
+          figsize: !!python/tuple
+          - 5
+          - 6
+          xlabel: Binomial spatial log-likelihood
+          linewidth: 0.5
+          capsize: 0
+          code: "import numpy\nimport matplotlib.ticker as tick\nfrom matplotlib.lines\
+            \ import Line2D\nimport seaborn\nseaborn.set_style(\"white\"\
+            , {\"axes.facecolor\": \".9\", 'font.family': 'Ubuntu'})\n\n\
+            for i,j in enumerate(results):\n      ax.plot(numpy.mean(j.test_distribution),len(results)-i-1,\
+            \ 'ko', markersize=4)\n      ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))\n\
+            legend_elements = [Line2D([0], [0], marker='o', lw=0, label='Sim.\
+            \ expected value',\n                          color='k', markersize=2),\n\
+            \                   Line2D([0], [0], color='k', lw=1, label='Sim.\
+            \ 95% conf.'),\n                   Line2D([0], [1], color='green',\
+            \ marker='s',lw=0, markersize=4, label='Obs. Likelihood (passes)'),\n\
+            \                   Line2D([0], [1], color='red', marker='o',lw=0,\
+            \ markersize=4, label='Obs. Likelihood (fails)')]\nax.legend(handles=legend_elements,\
+            \ loc='lower right', fontsize=9)\n"
+        plot_kwargs:
+          one_sided_lower: true
+- Brier:
+    func_kwargs:
+      binary: false
+    func: floatcsep.extras.brier_score
+    plot_func:
+    - csep.utils.plots.plot_poisson_consistency_test:
+        plot_args:
+          title: $\mathcal{Q}_{B}-$test
+          title_fontsize: 16
+          figsize: !!python/tuple
+          - 5
+          - 6
+          xlabel: Binomial spatial log-likelihood
+          linewidth: 0.5
+          capsize: 0
+        plot_kwargs: {}
+- Matrix_T:
+    func: floatcsep.extras.vector_poisson_t_w_test
+    plot_func:
+    - floatcsep.utils.plot_matrix_comparative_test:
+        plot_args:
+          order: false
+          code: "import seaborn\nimport matplotlib.pyplot as plt\nplt.rcParams.update({\n\
+            \                    'axes.titleweight': 'bold',\n         \
+            \           'xtick.bottom': True, 'axes.labelweight': 'bold',\n\
+            \                    'xtick.labelsize': 8, 'ytick.labelsize':\
+            \ 8,\n                    'legend.fontsize': 9})\n\nseaborn.set_style(\"\
+            darkgrid\", {\"axes.facecolor\": \".9\", 'font.family': 'Ubuntu'})\n"
+        plot_kwargs: {}
+task_graph: floatcsep.utils.TaskGraph
