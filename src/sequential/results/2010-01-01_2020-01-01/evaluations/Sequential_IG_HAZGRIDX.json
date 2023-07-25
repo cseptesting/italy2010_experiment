@@ -1,0 +1,34 @@
+{
+    "name": "Sequential Likelihood",
+    "sim_name": "HAZGRIDX",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": 1,
+    "observed_statistic": [
+        0.7448835764386401,
+        1.4897671528772802,
+        -6.180386469175346,
+        -7.569758246804781,
+        -6.822833893444397,
+        -6.077950317005758,
+        -7.682184145035336,
+        -10.862082303082275,
+        -11.608853603421295,
+        -10.86192925006091
+    ],
+    "test_distribution": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

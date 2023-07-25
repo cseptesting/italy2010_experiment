@@ -1,0 +1,34 @@
+{
+    "name": "Sequential Likelihood",
+    "sim_name": "PHM_Zone",
+    "obs_name": null,
+    "obs_catalog_repr": "",
+    "quantile": 1,
+    "observed_statistic": [
+        0.7470699603032498,
+        1.4941399206064996,
+        -20.203138903099827,
+        -19.24776128937026,
+        -18.498644562052533,
+        -17.751574601749212,
+        -17.56487925596781,
+        -17.133677468508694,
+        -20.10493285860275,
+        -19.355816131285053
+    ],
+    "test_distribution": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+    ],
+    "status": "normal",
+    "min_mw": 5.0,
+    "type": "EvaluationResult"
+}

@@ -1,0 +1,241 @@
+name: Cumulative Run
+path: ..
+config_file: config.yml
+rundir: results
+time_config:
+  start_date: 2010-01-01 00:00:00
+  end_date: 2020-01-01 00:00:00
+  intervals: 10
+  growth: cumulative
+  exp_class: ti
+  timewindows:
+  - - 2010-01-01 00:00:00
+    - 2011-01-01 04:48:00
+  - - 2010-01-01 00:00:00
+    - 2012-01-01 09:36:00
+  - - 2010-01-01 00:00:00
+    - 2012-12-31 14:24:00
+  - - 2010-01-01 00:00:00
+    - 2013-12-31 19:12:00
+  - - 2010-01-01 00:00:00
+    - 2015-01-01 00:00:00
+  - - 2010-01-01 00:00:00
+    - 2016-01-01 04:48:00
+  - - 2010-01-01 00:00:00
+    - 2016-12-31 09:36:00
+  - - 2010-01-01 00:00:00
+    - 2017-12-31 14:24:00
+  - - 2010-01-01 00:00:00
+    - 2018-12-31 19:12:00
+  - - 2010-01-01 00:00:00
+    - 2020-01-01 00:00:00
+region_config:
+  region: italy_csep_region
+  mag_min: 4.95
+  mag_max: 9.0
+  mag_bin: 0.1
+  depth_min: -2
+  depth_max: 30
+  depths:
+  - -2.0
+  - 30.0
+  magnitudes:
+  - 4.95
+  - 5.05
+  - 5.15
+  - 5.25
+  - 5.35
+  - 5.45
+  - 5.55
+  - 5.65
+  - 5.75
+  - 5.85
+  - 5.95
+  - 6.05
+  - 6.15
+  - 6.25
+  - 6.35
+  - 6.45
+  - 6.55
+  - 6.65
+  - 6.75
+  - 6.85
+  - 6.95
+  - 7.05
+  - 7.15
+  - 7.25
+  - 7.35
+  - 7.45
+  - 7.55
+  - 7.65
+  - 7.75
+  - 7.85
+  - 7.95
+  - 8.05
+  - 8.15
+  - 8.25
+  - 8.35
+  - 8.45
+  - 8.55
+  - 8.65
+  - 8.75
+  - 8.85
+  - 8.95
+catalog: results/catalog.json
+models:
+- HAZFX_BPT:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/akinci.HAZFX_BPT.italy.10yr.2010-01-01.xml
+    use_db: true
+- LTST:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/console-murru-falcone.LTST.italy.10yr.2010-01-01.xml
+    use_db: true
+- RI:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/nanjo.RI.italy.10yr.2010-01-01.xml
+    use_db: true
+- DBM:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/lombardi.DBM.italy.10yr.2010-01-01.xml
+    use_db: true
+- HAZGRIDX:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/akinci-lombardi.HAZGRIDX.italy.10yr.2010-01-01.xml
+    use_db: true
+- MPS04:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/meletti.MPS04.italy.10yr.2010-01-01.xml
+    use_db: true
+- MPS04after:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/meletti.MPS04after.italy.10yr.2010-01-01.xml
+    use_db: true
+- PHM_Grid:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/faenza.PHM_Grid.italy.10yr.2010-01-01.xml
+    use_db: true
+- PHM_Zone:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/faenza.PHM_Zone.italy.10yr.2010-01-01.xml
+    use_db: true
+- HZA_TD:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/chan.HZA_TD.italy.10yr.2010-01-01.xml
+    use_db: true
+- HZA_TI:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/chan.HZA_TI.italy.10yr.2010-01-01.xml
+    use_db: true
+- ALM:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/gulia-wiemer.ALM.italy.10yr.2010-01-01.xml
+    use_db: true
+- ALM_IT:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/schorlemmer-wiemer.ALM_IT.italy.10yr.2010-01-01.xml
+    use_db: true
+- HALM:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/gulia-wiemer.HALM.italy.10yr.2010-01-01.xml
+    use_db: true
+- HRSS-m2:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/werner.HRSS-m2.italy.10yr.2010-01-01.xml
+    use_db: true
+- HRSS-m1:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/werner.HRSS-m1.italy.10yr.2010-01-01.xml
+    use_db: true
+- TripleS-CPTI:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/zechar.TripleS-CPTI.italy.10yr.2010-01-01.xml
+    use_db: true
+- TripleS-hybrid:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/zechar.TripleS-hybrid.italy.10yr.2010-01-01.xml
+    use_db: true
+- TripleS-CSI:
+    forecast_unit: 10
+    model_class: ti
+    path: ../../models/zechar.TripleS-CSI.italy.10yr.2010-01-01.xml
+    use_db: true
+tests:
+- Sequential_IG:
+    ref_model: MPS04
+    func: floatcsep.extras.sequential_information_gain
+    plot_func:
+    - floatcsep.utils.plot_sequential_likelihood:
+        plot_args:
+          ylabel: Information Gain (respect to MPS04)
+          figsize: !!python/tuple
+          - 8
+          - 4
+          linewidth: 1
+          colors:
+          - darkgreen
+          - fuchsia
+          - saddlebrown
+          - gold
+          - bisque
+          - steelblue
+          - darkturquoise
+          - sandybrown
+          - violet
+          - peachpuff
+          - peru
+          - tomato
+          - lightsalmon
+          - red
+          - yellow
+          - purple
+          - limegreen
+          - orange
+          - chocolate
+          linestyles:
+          - '-'
+          - '-'
+          - '-'
+          - '-'
+          - '-'
+          - '-'
+          - '-'
+          - '-'
+          - '-'
+          - '-'
+          - '-'
+          - ':'
+          - ':'
+          - ':'
+          - -.
+          - -.
+          - --
+          - --
+          - --
+          code: "import seaborn\nimport matplotlib.pyplot as plt\nplt.rcParams.update({\n\
+            \                    'axes.titleweight': 'bold',\n         \
+            \           'xtick.bottom': True, 'axes.labelweight': 'bold',\n\
+            \                    'xtick.labelsize': 8, 'ytick.labelsize':\
+            \ 8,\n                    'legend.fontsize': 9})\nplt.ylim([-20,\
+            \ 16])\nseaborn.set_style(\"darkgrid\", {\"axes.facecolor\"\
+            : \".9\", 'font.family': 'Ubuntu'})\n"
+        plot_kwargs: {}
+task_graph: floatcsep.utils.TaskGraph
