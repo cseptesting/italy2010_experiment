@@ -17,14 +17,9 @@ conda create -n float_italy
 conda activate float_italy
 ```
 
-Install pyCSEP
-```
-conda install -c conda-forge pycsep==0.6.2
-```
-
 Install floatCSEP
 ```
-pip install floatcsep==0.1.4
+conda install -c conda-forge floatcsep=0.1.4
 ```
 
 

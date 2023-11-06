@@ -177,7 +177,7 @@
             seaborn.set_style("white", {"axes.facecolor": ".9", 'font.family': 'Ubuntu'}) 
             
             for i,j in enumerate(results):
-                ax.plot(numpy.mean(j.test_distribution),len(results)-i-1, 'ko', markersize=4)
+                ax.plot(numpy.mean(j.test_distribution),len(results) - i - 1, 'ko', markersize=4)
                 ax.xaxis.set_major_locator(tick.MaxNLocator(integer=True))
             legend_elements = [Line2D([0], [0], marker='o', lw=0, label='Sim. expected value',
                                       color='k', markersize=2),
@@ -230,7 +230,6 @@
         xlabel: Binomial spatial log-likelihood
         linewidth: 0.5
         capsize: 0
-
 - Matrix_T:
     func: vector_poisson_t_w_test
     func_kwargs: {}
