@@ -42,7 +42,7 @@ def plot_cl_test(experiment, figpath=None):
     ax2.set_yticklabels(
         [f'{res.quantile * 100:.1f}' for res in cl_results[::-1]])
     ax2.set_ylim([-0.5, len(cl_results) - 0.5])
-    ax.get_figure().text(0.91, 0.95, r'$\gamma\,[\%]$')
+    ax.get_figure().text(0.91, 0.95, r'$\gamma^{\,j}\,[\%]$')
     plt.tight_layout()
     if figpath:
         plt.savefig(figpath, dpi=300)
