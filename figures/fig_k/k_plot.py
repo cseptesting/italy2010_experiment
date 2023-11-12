@@ -5,11 +5,19 @@ import time
 import scipy.interpolate as scint
 from multiprocessing import Pool
 import cartopy
+from scipy.signal import medfilt
+
 from floatcsep.experiment import Experiment
 from floatcsep.utils import timewindow2str
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+sns.set_style("darkgrid", {"axes.facecolor": ".9", 'font.family': 'Ubuntu'})
+plt.rcParams.update({
+    'xtick.bottom': True,
+    'ytick.left': True,
+    'xtick.labelsize': 10,
+    'ytick.labelsize': 10,
+    'legend.fontsize': 9})
 
 def read_hdf5(fname):
 
@@ -160,7 +168,6 @@ def plot_combined(total_results, savefolder='figs', alpha=0.05, order='inc'):
                              where=(vals != 0), interpolate=True, zorder=n)
 
         plt.axvline(index, c='black', zorder=n, lw=0.9)
-    plt.grid()
     cba = plt.colorbar(im, shrink=0.5, fraction=0.03, pad=0.03)
     cba.ax.set_title('$L(r)$', pad=15)
     n = 0
@@ -174,6 +181,9 @@ def plot_combined(total_results, savefolder='figs', alpha=0.05, order='inc'):
         vals = np.sqrt(np.abs(vals))
         vals[np.isnan(vals)] = 0
         vals[-1] = 0
+
+        vals = medfilt(vals, kernel_size=3)
+        vals[vals != 0] *= 3
         xamp = 1.2
         new_vals = vals / (range_[1]) * xamp - 0.5
 
@@ -181,6 +191,7 @@ def plot_combined(total_results, savefolder='figs', alpha=0.05, order='inc'):
         ymin, ymax = min(x), max(x)
 
         y = index - 0.5 - new_vals
+
         img_data = np.flip(np.linspace(range_[0], range_[1], num=100))
         img_data = img_data.reshape(img_data.size, 1).T
         im = ax.imshow(img_data, aspect='auto', origin='lower',
@@ -200,21 +211,20 @@ def plot_combined(total_results, savefolder='figs', alpha=0.05, order='inc'):
     ax.set_ylim([-10, 800])
     ax.set_xticklabels([key for key in iter_array], rotation=45, ha='right')
     ax.set_xticks(np.arange(len(A)))
-    ax.set_ylabel("$r\,[\mathrm{km}]$")
+    ax.set_ylabel("$r\,[\mathrm{km}]$", fontsize=12)
     plt.tight_layout()
-    plt.savefig(os.path.join(savefolder, 'total_k.png'), dpi=300,
-                facecolor=(0, 0, 0, 0))
+    plt.savefig('total_k.png', dpi=300)
     plt.show()
 
     return b
 
 
 if __name__ == "__main__":
+
     exp_path = os.path.join('../../src', 'total')
     ripley_path = os.path.join('../../src', 'ripley')
     cfg_file = os.path.join(exp_path, 'config.yml')
     experiment = Experiment.from_yml(cfg_file)
-    experiment.stage_models()
     experiment.set_tasks()
     time_window = timewindow2str(experiment.timewindows[0])
     models = experiment.models
@@ -228,12 +238,12 @@ if __name__ == "__main__":
                                                      'results',
                                                      f'K_{model.name}.hdf5'))
         results[model.name]['name'] = model.name
-        plot_results(results[model.name])
+    #     plot_results(results[model.name], show=True)
 
     order = [(i.sim_name, i.observed_statistic) for i in
-             experiment.read_results(experiment.tests[-4], time_window)]
+             experiment.read_results(experiment.tests[2], time_window)]
     order = [order[i][0] for i in np.flip(np.argsort([i[1] for i in order]))]
-
+    #
     plot_combined(results, order=order)
 
 

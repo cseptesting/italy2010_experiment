@@ -25,13 +25,14 @@ def plot_seq_ig(experiment, figpath=None):
     ig_results = [ig_results[i] for i in rank]
     colors = ['steelblue', 'darkturquoise',
               'darkgreen', 'limegreen',
-              'xkcd:off yellow', 'gold', 'xkcd:yellowish orange',
+              'xkcd:neon yellow', 'gold', 'xkcd:yellowish orange',
               'xkcd:raw umber', 'xkcd:brown', 'xkcd:cement',
               'xkcd:fuchsia', 'xkcd:pinkish purple', 'xkcd:purple',
               'xkcd:indigo', 'xkcd:shocking pink',
               'xkcd:medium pink', 'red', 'xkcd:darkish red', 'xkcd:black']
-    linestyles = ['-', '-',  '-', '-', '-',  '-', '-', '-',  '-', '-',  '-',
-                  ':', ':', ':',  '-.', '-.', '--', '--', '--']
+
+    linestyles = ['--', '-',  '-.', '-.', ':',  '-', '--', '-',  '-', '--',  '-',
+                  '-', '-', ':',  '-', '-', '-', '-', '-']
     startyear = experiment.timewindows[0][0]
     endyears = [j[1] for j in experiment.timewindows]
     years = [startyear] + endyears
