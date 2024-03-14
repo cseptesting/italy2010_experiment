@@ -65,13 +65,13 @@ def plot_seq_ig(experiment, figpath=None):
     ax2.yaxis.set_label_coords(1.06, 1.1)
     fig.tight_layout()
     if figpath:
-        plt.savefig(figpath, dpi=300)
-    plt.show()
+        plt.savefig(figpath, dpi=1500)
+        print(f'Figure saved to {figpath}')
 
 
 if __name__ == '__main__':
     cfg = '../../src/sequential/config.yml'
     experiment = experiment.Experiment.from_yml(cfg)
     experiment.set_tasks()
-    cl_figpath = 'Sequential_IG.png'
+    cl_figpath = 'Fig8_HR.png'
     plot_seq_ig(experiment, cl_figpath)

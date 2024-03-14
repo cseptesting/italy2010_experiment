@@ -1,0 +1,11 @@
+name: float_italy
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python==3.10.11
+  - pip
+  - floatcsep==0.1.4
+  - pip:
+    - rpy2==3.5.12
+  - rioxarray==0.14.1
