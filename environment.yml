@@ -6,6 +6,7 @@ dependencies:
   - python==3.10.11
   - pip
   - floatcsep==0.1.4
+  - pycsep==0.6.3
   - pip:
     - rpy2==3.5.12
   - rioxarray==0.14.1
